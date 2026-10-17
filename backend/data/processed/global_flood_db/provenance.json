@@ -1,0 +1,9 @@
+{
+  "source_id": "global_flood_db",
+  "status": "SUCCESS",
+  "retrieval_timestamp": "2026-10-15T19:03:31.860488+00:00",
+  "duration_seconds": 0.0,
+  "records_ingested": 2,
+  "is_demo_fallback": false,
+  "details": "Cataloged 2 historical flood ground-truth benchmark events."
+}

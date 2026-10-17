@@ -1,0 +1,18 @@
+{
+  "platform": "Google Cloud Platform (GCP) - Google Maps Platform",
+  "api_used": "Maps JavaScript API",
+  "basemap_services": [
+    "Google Maps Standard Roadmap (Streets)",
+    "Google Maps Satellite Hybrid (High-Res Aerial + Labels)",
+    "Google Maps Topographic Terrain (Elevation Contours)"
+  ],
+  "auth_configured": true,
+  "key_present": true,
+  "layers_supported": [
+    "Google Dynamic Basemap Tiles (Roadmap lyrs=m)",
+    "Google Satellite Hybrid Tiles (lyrs=y)",
+    "Google Topographic Terrain Tiles (lyrs=p)",
+    "Google Maps JavaScript API SDK (window.google.maps)"
+  ],
+  "client_integration": "Google Maps JavaScript API v3 / Dynamic Leaflet Tile Layers"
+}

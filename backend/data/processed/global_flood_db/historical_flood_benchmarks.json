@@ -1,0 +1,25 @@
+{
+  "events": [
+    {
+      "dfo_event_id": 2841,
+      "event_name": "26 July 2005 Mumbai Catastrophic Deluge",
+      "start_date": "2005-07-26",
+      "end_date": "2005-07-28",
+      "peak_rainfall_mm": 944.2,
+      "fatalities": 1094,
+      "satellite_validation": "MODIS & Terra/Aqua flooded area mask",
+      "validation_notes": "Confluence of 944mm rainfall and 4.48m Arabian Sea astronomical high tide."
+    },
+    {
+      "dfo_event_id": 4512,
+      "event_name": "29 August 2017 Mumbai Floods",
+      "start_date": "2017-08-29",
+      "end_date": "2017-08-30",
+      "peak_rainfall_mm": 331.4,
+      "fatalities": 14,
+      "satellite_validation": "Sentinel-1 SAR C-band change detection",
+      "validation_notes": "Mithi river overflowing into Kurla and Bandra-Kurla Complex."
+    }
+  ],
+  "count": 2
+}

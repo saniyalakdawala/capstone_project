@@ -1,0 +1,9 @@
+{
+  "source_id": "copernicus_sentinel1",
+  "status": "SUCCESS",
+  "retrieval_timestamp": "2026-10-15T19:03:15.357388+00:00",
+  "duration_seconds": 2.86,
+  "records_ingested": 5,
+  "is_demo_fallback": false,
+  "details": "Processed 5 Copernicus Earth Observation scenes."
+}

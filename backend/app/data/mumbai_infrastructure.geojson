@@ -1,0 +1,296 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "INFRA_HOSP_01",
+        "name": "Lokmanya Tilak Municipal General Hospital (Sion Hospital)",
+        "type": "hospital",
+        "ward_id": "MUM_WARD_FN_SION",
+        "beds": 1400,
+        "trauma_center": true,
+        "icu_capacity": 120,
+        "elevation_m": 4.2
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8601,
+          19.0384
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "INFRA_HOSP_02",
+        "name": "Bhabha Municipal Hospital (Kurla)",
+        "type": "hospital",
+        "ward_id": "MUM_WARD_L_KURLA",
+        "beds": 350,
+        "trauma_center": false,
+        "icu_capacity": 30,
+        "elevation_m": 5.4
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.879,
+          19.0665
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "INFRA_HOSP_03",
+        "name": "Asian Heart Institute (BKC)",
+        "type": "hospital",
+        "ward_id": "MUM_WARD_HE_BANDRA_E",
+        "beds": 250,
+        "trauma_center": true,
+        "icu_capacity": 65,
+        "elevation_m": 5.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.864,
+          19.064
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "INFRA_HOSP_04",
+        "name": "Lilavati Hospital & Research Centre",
+        "type": "hospital",
+        "ward_id": "MUM_WARD_HW_BANDRA_W",
+        "beds": 314,
+        "trauma_center": true,
+        "icu_capacity": 60,
+        "elevation_m": 8.1
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.829,
+          19.0512
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "INFRA_HOSP_05",
+        "name": "Nanavati Max Super Speciality Hospital",
+        "type": "hospital",
+        "ward_id": "MUM_WARD_KW_ANDHERI_W",
+        "beds": 350,
+        "trauma_center": true,
+        "icu_capacity": 75,
+        "elevation_m": 6.8
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8415,
+          19.0988
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "INFRA_HOSP_06",
+        "name": "Dr. R.N. Cooper Municipal General Hospital",
+        "type": "hospital",
+        "ward_id": "MUM_WARD_KW_ANDHERI_W",
+        "beds": 630,
+        "trauma_center": true,
+        "icu_capacity": 55,
+        "elevation_m": 4.9
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.836,
+          19.1105
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "INFRA_HOSP_07",
+        "name": "P.D. Hinduja National Hospital & MRC",
+        "type": "hospital",
+        "ward_id": "MUM_WARD_GN_DHARAVI",
+        "beds": 400,
+        "trauma_center": true,
+        "icu_capacity": 80,
+        "elevation_m": 5.9
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8402,
+          19.0345
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "INFRA_HOSP_08",
+        "name": "King Edward Memorial (KEM) Hospital",
+        "type": "hospital",
+        "ward_id": "MUM_WARD_GS_WORLI",
+        "beds": 1800,
+        "trauma_center": true,
+        "icu_capacity": 150,
+        "elevation_m": 5.5
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.8428,
+          19.0028
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "INFRA_HOSP_09",
+        "name": "SevenHills Hospital",
+        "type": "hospital",
+        "ward_id": "MUM_WARD_KE_ANDHERI_E",
+        "beds": 1500,
+        "trauma_center": true,
+        "icu_capacity": 120,
+        "elevation_m": 16.2
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.879,
+          19.118
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "INFRA_SCH_01",
+        "name": "Dhirubhai Ambani International School (BKC)",
+        "type": "school",
+        "ward_id": "MUM_WARD_HE_BANDRA_E",
+        "student_capacity": 1100,
+        "designated_shelter": true
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.867,
+          19.066
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "INFRA_SCH_02",
+        "name": "Don Bosco High School (Matunga)",
+        "type": "school",
+        "ward_id": "MUM_WARD_FN_SION",
+        "student_capacity": 2200,
+        "designated_shelter": true
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.857,
+          19.028
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "INFRA_SCH_03",
+        "name": "Holy Cross High School (Kurla)",
+        "type": "school",
+        "ward_id": "MUM_WARD_L_KURLA",
+        "student_capacity": 1800,
+        "designated_shelter": false
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.874,
+          19.071
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "INFRA_FIRE_01",
+        "name": "Kurla Fire Station (L-Ward)",
+        "type": "fire_station",
+        "ward_id": "MUM_WARD_L_KURLA",
+        "vehicles": 6,
+        "boat_units": 4,
+        "emergency_crews": 32
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.881,
+          19.068
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "INFRA_FIRE_02",
+        "name": "Dharavi Fire Station",
+        "type": "fire_station",
+        "ward_id": "MUM_WARD_GN_DHARAVI",
+        "vehicles": 5,
+        "boat_units": 3,
+        "emergency_crews": 28
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.855,
+          19.043
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "INFRA_FIRE_03",
+        "name": "BKC Disaster Management Response Base",
+        "type": "fire_station",
+        "ward_id": "MUM_WARD_HE_BANDRA_E",
+        "vehicles": 8,
+        "boat_units": 6,
+        "emergency_crews": 45
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          72.862,
+          19.061
+        ]
+      }
+    }
+  ]
+}

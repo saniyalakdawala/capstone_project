@@ -1,0 +1,9 @@
+{
+  "source_id": "imd_aws",
+  "status": "SUCCESS",
+  "retrieval_timestamp": "2026-10-15T19:03:31.862175+00:00",
+  "duration_seconds": 0.0,
+  "records_ingested": 1,
+  "is_demo_fallback": true,
+  "details": "IMD Official API credentials not configured in environment (IMD_API_KEY). Setup procedure: Register at https://mausam.imd.gov.in/ or MoES data portal to obtain credentials for automated AWS feed access. Operating in verified IMD station historical benchmark mode."
+}

@@ -1,0 +1,8 @@
+{
+  "source_id": "openstreetmap",
+  "status": "ERROR",
+  "retrieval_timestamp": "2026-10-15T19:05:42.723585+00:00",
+  "error_message": "[openstreetmap] Failed after 3 retries: HTTPSConnectionPool(host='overpass-api.de', port=443): Read timed out. (read timeout=25)",
+  "is_demo_fallback": true,
+  "details": "External API connection failed. Operating in authenticated or demo fallback mode."
+}

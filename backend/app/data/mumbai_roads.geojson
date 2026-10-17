@@ -1,0 +1,283 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "ROAD_WEH_01",
+        "name": "Western Express Highway (Kalanagar to Andheri)",
+        "class": "motorway",
+        "vulnerability": 0.35,
+        "speed_kmh": 70.0
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            72.845,
+            19.055
+          ],
+          [
+            72.85,
+            19.08
+          ],
+          [
+            72.852,
+            19.115
+          ],
+          [
+            72.853,
+            19.135
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "ROAD_EEH_01",
+        "name": "Eastern Express Highway (Sion to Ghatkopar)",
+        "class": "motorway",
+        "vulnerability": 0.4,
+        "speed_kmh": 70.0
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            72.865,
+            19.04
+          ],
+          [
+            72.875,
+            19.065
+          ],
+          [
+            72.89,
+            19.095
+          ],
+          [
+            72.905,
+            19.12
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "ROAD_LBS_01",
+        "name": "Lal Bahadur Shastri (LBS) Marg (Sion to Kurla West)",
+        "class": "primary",
+        "vulnerability": 0.88,
+        "speed_kmh": 40.0
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            72.868,
+            19.045
+          ],
+          [
+            72.875,
+            19.065
+          ],
+          [
+            72.88,
+            19.085
+          ],
+          [
+            72.885,
+            19.105
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "ROAD_SCLR_01",
+        "name": "Santacruz-Chembur Link Road (SCLR)",
+        "class": "primary",
+        "vulnerability": 0.45,
+        "speed_kmh": 60.0
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            72.852,
+            19.075
+          ],
+          [
+            72.87,
+            19.072
+          ],
+          [
+            72.892,
+            19.068
+          ],
+          [
+            72.91,
+            19.065
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "ROAD_BKC_CONN",
+        "name": "BKC Connector (Bandra Kurla Avenue)",
+        "class": "primary",
+        "vulnerability": 0.55,
+        "speed_kmh": 50.0
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            72.845,
+            19.058
+          ],
+          [
+            72.862,
+            19.062
+          ],
+          [
+            72.875,
+            19.065
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "ROAD_SION_BANDRA",
+        "name": "Sion-Bandra Link Road (Creek Corridor)",
+        "class": "secondary",
+        "vulnerability": 0.92,
+        "speed_kmh": 35.0
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            72.85,
+            19.048
+          ],
+          [
+            72.858,
+            19.045
+          ],
+          [
+            72.865,
+            19.042
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "ROAD_MILAN_SUBWAY",
+        "name": "Milan Subway Arterial Underpass",
+        "class": "tertiary",
+        "vulnerability": 0.95,
+        "speed_kmh": 30.0
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            72.839,
+            19.085
+          ],
+          [
+            72.844,
+            19.086
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "ROAD_ANDHERI_SUBWAY",
+        "name": "Andheri Subway Underpass",
+        "class": "tertiary",
+        "vulnerability": 0.98,
+        "speed_kmh": 25.0
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            72.843,
+            19.118
+          ],
+          [
+            72.847,
+            19.119
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "ROAD_SV_ROAD",
+        "name": "Swami Vivekananda (SV) Road (Bandra to Juhu)",
+        "class": "primary",
+        "vulnerability": 0.6,
+        "speed_kmh": 40.0
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            72.836,
+            19.055
+          ],
+          [
+            72.838,
+            19.085
+          ],
+          [
+            72.84,
+            19.115
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "ROAD_JVLR_01",
+        "name": "Jogeshwari-Vikhroli Link Road (JVLR)",
+        "class": "primary",
+        "vulnerability": 0.3,
+        "speed_kmh": 60.0
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            72.85,
+            19.135
+          ],
+          [
+            72.88,
+            19.13
+          ],
+          [
+            72.915,
+            19.125
+          ]
+        ]
+      }
+    }
+  ]
+}

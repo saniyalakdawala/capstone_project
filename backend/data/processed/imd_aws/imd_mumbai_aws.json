@@ -1,0 +1,13 @@
+{
+  "station_id": "43003",
+  "station_name": "IMD Santacruz AWS (Mumbai Suburban)",
+  "elevation_m": 14.0,
+  "latest_observation": {
+    "timestamp": "2026-10-15T19:03:31.861469+00:00",
+    "rainfall_24h_mm": 68.4,
+    "temperature_c": 29.2,
+    "humidity_pct": 84.0,
+    "status": "VERIFIED_STATION_BENCHMARK"
+  },
+  "onboarding_guide": "Refer to docs/SETUP_GUIDE.md for IMD API key configuration."
+}

@@ -1,0 +1,9 @@
+{
+  "source_id": "arcgis_living_atlas",
+  "status": "SUCCESS",
+  "retrieval_timestamp": "2026-10-15T19:03:31.864543+00:00",
+  "duration_seconds": 0.0,
+  "records_ingested": 4,
+  "is_demo_fallback": true,
+  "details": "ArcGIS API key not set. Using standardized open vector map services."
+}

@@ -1,0 +1,29 @@
+{
+  "source_name": "OpenStreetMap",
+  "access_mechanism": "OSMnx 2.1 & Official OSM API 0.6",
+  "study_area_bbox": [
+    72.86,
+    19.055,
+    72.885,
+    19.075
+  ],
+  "study_area_name": "Mumbai Pilot (Kurla / BKC Corridor)",
+  "retrieval_timestamp": "2026-10-16T06:05:52.570324+00:00",
+  "duration_seconds": 26.58,
+  "features_retrieved": {
+    "road_segments_count": 6768,
+    "nodes_count": 6790,
+    "facilities_count": 22,
+    "waterways_count": 14
+  },
+  "status": "SUCCESS_REAL_DATA",
+  "crs": "EPSG:4326 (WGS84)",
+  "attribution": "Map data \u00a9 OpenStreetMap contributors, ODbL 1.0",
+  "raw_storage_path": "C:\\Projects\\capstone_project\\backend\\app\\data\\..\\..\\data\\raw\\openstreetmap\\mumbai_raw_20261016_060525.osm",
+  "processed_storage": {
+    "roads_geojson": "C:\\Projects\\capstone_project\\backend\\app\\data\\..\\..\\data\\processed\\openstreetmap\\mumbai_roads_real.geojson",
+    "facilities_geojson": "C:\\Projects\\capstone_project\\backend\\app\\data\\..\\..\\data\\processed\\openstreetmap\\mumbai_facilities_real.geojson",
+    "waterways_geojson": "C:\\Projects\\capstone_project\\backend\\app\\data\\..\\..\\data\\processed\\openstreetmap\\mumbai_waterways_real.geojson",
+    "geopackage": "C:\\Projects\\capstone_project\\backend\\app\\data\\..\\..\\data\\processed\\openstreetmap\\mumbai_osm.gpkg"
+  }
+}

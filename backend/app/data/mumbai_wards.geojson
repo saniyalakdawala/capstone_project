@@ -1,0 +1,379 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "study_area_id": "MUM_WARD_L_KURLA",
+        "name": "Ward L (Kurla - Sakinaka)",
+        "population": 903000,
+        "area_km2": 15.84,
+        "elevation_mean_m": 6.2
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              72.868,
+              19.06
+            ],
+            [
+              72.895,
+              19.06
+            ],
+            [
+              72.905,
+              19.09
+            ],
+            [
+              72.89,
+              19.115
+            ],
+            [
+              72.865,
+              19.095
+            ],
+            [
+              72.868,
+              19.06
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "study_area_id": "MUM_WARD_FN_SION",
+        "name": "Ward F/North (Sion - Matunga East)",
+        "population": 529000,
+        "area_km2": 13.52,
+        "elevation_mean_m": 4.5
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              72.855,
+              19.025
+            ],
+            [
+              72.875,
+              19.025
+            ],
+            [
+              72.88,
+              19.055
+            ],
+            [
+              72.86,
+              19.058
+            ],
+            [
+              72.855,
+              19.025
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "study_area_id": "MUM_WARD_HE_BANDRA_E",
+        "name": "Ward H/East (Bandra East - BKC)",
+        "population": 580000,
+        "area_km2": 13.48,
+        "elevation_mean_m": 5.1
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              72.835,
+              19.055
+            ],
+            [
+              72.868,
+              19.055
+            ],
+            [
+              72.868,
+              19.085
+            ],
+            [
+              72.845,
+              19.09
+            ],
+            [
+              72.835,
+              19.055
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "study_area_id": "MUM_WARD_HW_BANDRA_W",
+        "name": "Ward H/West (Bandra West - Khar)",
+        "population": 352000,
+        "area_km2": 11.55,
+        "elevation_mean_m": 7.6
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              72.818,
+              19.045
+            ],
+            [
+              72.838,
+              19.045
+            ],
+            [
+              72.838,
+              19.085
+            ],
+            [
+              72.822,
+              19.08
+            ],
+            [
+              72.818,
+              19.045
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "study_area_id": "MUM_WARD_KW_ANDHERI_W",
+        "name": "Ward K/West (Andheri West - Juhu)",
+        "population": 748000,
+        "area_km2": 23.4,
+        "elevation_mean_m": 5.3
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              72.81,
+              19.1
+            ],
+            [
+              72.845,
+              19.1
+            ],
+            [
+              72.845,
+              19.155
+            ],
+            [
+              72.815,
+              19.15
+            ],
+            [
+              72.81,
+              19.1
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "study_area_id": "MUM_WARD_KE_ANDHERI_E",
+        "name": "Ward K/East (Andheri East - Marol)",
+        "population": 823000,
+        "area_km2": 24.78,
+        "elevation_mean_m": 14.8
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              72.845,
+              19.1
+            ],
+            [
+              72.885,
+              19.1
+            ],
+            [
+              72.885,
+              19.15
+            ],
+            [
+              72.845,
+              19.155
+            ],
+            [
+              72.845,
+              19.1
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "study_area_id": "MUM_WARD_GN_DHARAVI",
+        "name": "Ward G/North (Dharavi - Mahim)",
+        "population": 598000,
+        "area_km2": 9.07,
+        "elevation_mean_m": 3.8
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              72.835,
+              19.03
+            ],
+            [
+              72.86,
+              19.03
+            ],
+            [
+              72.86,
+              19.055
+            ],
+            [
+              72.835,
+              19.055
+            ],
+            [
+              72.835,
+              19.03
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "study_area_id": "MUM_WARD_GS_WORLI",
+        "name": "Ward G/South (Worli - Lower Parel)",
+        "population": 399000,
+        "area_km2": 10.02,
+        "elevation_mean_m": 4.2
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              72.81,
+              18.995
+            ],
+            [
+              72.835,
+              18.995
+            ],
+            [
+              72.838,
+              19.03
+            ],
+            [
+              72.815,
+              19.03
+            ],
+            [
+              72.81,
+              18.995
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "study_area_id": "MUM_WARD_A_COLABA",
+        "name": "Ward A (Colaba - Fort)",
+        "population": 211000,
+        "area_km2": 12.5,
+        "elevation_mean_m": 6.4
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              72.815,
+              18.895
+            ],
+            [
+              72.838,
+              18.895
+            ],
+            [
+              72.842,
+              18.945
+            ],
+            [
+              72.82,
+              18.945
+            ],
+            [
+              72.815,
+              18.895
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "study_area_id": "MUM_WARD_S_POWAI",
+        "name": "Ward S (Bhandup - Powai)",
+        "population": 743000,
+        "area_km2": 64.0,
+        "elevation_mean_m": 29.5
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              72.885,
+              19.11
+            ],
+            [
+              72.945,
+              19.11
+            ],
+            [
+              72.94,
+              19.175
+            ],
+            [
+              72.885,
+              19.17
+            ],
+            [
+              72.885,
+              19.11
+            ]
+          ]
+        ]
+      }
+    }
+  ]
+}

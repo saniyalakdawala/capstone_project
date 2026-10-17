@@ -1,0 +1,89 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Mithi River (Powai Lake to Mahim Bay)",
+        "width_m": 35.0
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            72.905,
+            19.128
+          ],
+          [
+            72.89,
+            19.11
+          ],
+          [
+            72.88,
+            19.085
+          ],
+          [
+            72.868,
+            19.068
+          ],
+          [
+            72.855,
+            19.058
+          ],
+          [
+            72.838,
+            19.045
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Oshiwara River",
+        "width_m": 20.0
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            72.86,
+            19.155
+          ],
+          [
+            72.835,
+            19.145
+          ],
+          [
+            72.815,
+            19.142
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Mahim Creek & Bay Outlet",
+        "width_m": 250.0
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            72.838,
+            19.045
+          ],
+          [
+            72.825,
+            19.04
+          ],
+          [
+            72.815,
+            19.035
+          ]
+        ]
+      }
+    }
+  ]
+}

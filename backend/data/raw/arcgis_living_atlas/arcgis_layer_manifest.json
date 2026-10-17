@@ -1,0 +1,13 @@
+{
+  "platform": "ArcGIS Maps SDK / Living Atlas",
+  "basemap_service": "arcgis/light-gray (Esri World Light Gray Canvas)",
+  "vector_tile_service": "https://basemaps-api.arcgis.com/arcgis/rest/services/styles/ArcGIS:LightGray",
+  "auth_configured": false,
+  "layers_supported": [
+    "World Hydro Reference Overlay",
+    "Sentinel-2 10m Land Use/Land Cover (Living Atlas)",
+    "Global River Classification (HydroSHEDS)",
+    "USA & International Flood Hazard Zones"
+  ],
+  "client_integration": "ArcGIS Maps SDK for JavaScript v4.30 / React WebMap"
+}

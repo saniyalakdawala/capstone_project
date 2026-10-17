@@ -1,0 +1,125 @@
+{
+  "time_series": [
+    {
+      "date": "20240701",
+      "rainfall_mm": 23.8,
+      "source": "NASA GPM IMERG / POWER",
+      "unit": "mm/day"
+    },
+    {
+      "date": "20240702",
+      "rainfall_mm": 25.75,
+      "source": "NASA GPM IMERG / POWER",
+      "unit": "mm/day"
+    },
+    {
+      "date": "20240703",
+      "rainfall_mm": 6.79,
+      "source": "NASA GPM IMERG / POWER",
+      "unit": "mm/day"
+    },
+    {
+      "date": "20240704",
+      "rainfall_mm": 13.04,
+      "source": "NASA GPM IMERG / POWER",
+      "unit": "mm/day"
+    },
+    {
+      "date": "20240705",
+      "rainfall_mm": 18.03,
+      "source": "NASA GPM IMERG / POWER",
+      "unit": "mm/day"
+    },
+    {
+      "date": "20240706",
+      "rainfall_mm": 39.52,
+      "source": "NASA GPM IMERG / POWER",
+      "unit": "mm/day"
+    },
+    {
+      "date": "20240707",
+      "rainfall_mm": 58.64,
+      "source": "NASA GPM IMERG / POWER",
+      "unit": "mm/day"
+    },
+    {
+      "date": "20240708",
+      "rainfall_mm": 56.74,
+      "source": "NASA GPM IMERG / POWER",
+      "unit": "mm/day"
+    },
+    {
+      "date": "20240709",
+      "rainfall_mm": 40.59,
+      "source": "NASA GPM IMERG / POWER",
+      "unit": "mm/day"
+    },
+    {
+      "date": "20240710",
+      "rainfall_mm": 13.21,
+      "source": "NASA GPM IMERG / POWER",
+      "unit": "mm/day"
+    },
+    {
+      "date": "20240711",
+      "rainfall_mm": 20.43,
+      "source": "NASA GPM IMERG / POWER",
+      "unit": "mm/day"
+    },
+    {
+      "date": "20240712",
+      "rainfall_mm": 80.45,
+      "source": "NASA GPM IMERG / POWER",
+      "unit": "mm/day"
+    },
+    {
+      "date": "20240713",
+      "rainfall_mm": 92.31,
+      "source": "NASA GPM IMERG / POWER",
+      "unit": "mm/day"
+    },
+    {
+      "date": "20240714",
+      "rainfall_mm": 53.06,
+      "source": "NASA GPM IMERG / POWER",
+      "unit": "mm/day"
+    },
+    {
+      "date": "20240715",
+      "rainfall_mm": 30.52,
+      "source": "NASA GPM IMERG / POWER",
+      "unit": "mm/day"
+    },
+    {
+      "date": "20240716",
+      "rainfall_mm": 9.37,
+      "source": "NASA GPM IMERG / POWER",
+      "unit": "mm/day"
+    },
+    {
+      "date": "20240717",
+      "rainfall_mm": 25.98,
+      "source": "NASA GPM IMERG / POWER",
+      "unit": "mm/day"
+    },
+    {
+      "date": "20240718",
+      "rainfall_mm": 48.74,
+      "source": "NASA GPM IMERG / POWER",
+      "unit": "mm/day"
+    },
+    {
+      "date": "20240719",
+      "rainfall_mm": 43.23,
+      "source": "NASA GPM IMERG / POWER",
+      "unit": "mm/day"
+    },
+    {
+      "date": "20240720",
+      "rainfall_mm": 69.62,
+      "source": "NASA GPM IMERG / POWER",
+      "unit": "mm/day"
+    }
+  ],
+  "count": 20
+}

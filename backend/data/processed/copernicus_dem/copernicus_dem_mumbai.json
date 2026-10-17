@@ -1,0 +1,53 @@
+{
+  "elevation_profile": [
+    {
+      "location": "Kurla Station",
+      "latitude": 19.065,
+      "longitude": 72.88,
+      "elevation_m": 6.2,
+      "datum": "EGM96 / WGS84",
+      "source": "Copernicus GLO-30 DEM"
+    },
+    {
+      "location": "Sion Circle",
+      "latitude": 19.038,
+      "longitude": 72.86,
+      "elevation_m": 4.5,
+      "datum": "EGM96 / WGS84",
+      "source": "Copernicus GLO-30 DEM"
+    },
+    {
+      "location": "BKC Central",
+      "latitude": 19.064,
+      "longitude": 72.864,
+      "elevation_m": 5.1,
+      "datum": "EGM96 / WGS84",
+      "source": "Copernicus GLO-30 DEM"
+    },
+    {
+      "location": "Bandra West",
+      "latitude": 19.055,
+      "longitude": 72.83,
+      "elevation_m": 7.8,
+      "datum": "EGM96 / WGS84",
+      "source": "Copernicus GLO-30 DEM"
+    },
+    {
+      "location": "Powai Lake",
+      "latitude": 19.125,
+      "longitude": 72.905,
+      "elevation_m": 29.5,
+      "datum": "EGM96 / WGS84",
+      "source": "Copernicus GLO-30 DEM"
+    },
+    {
+      "location": "Colaba",
+      "latitude": 18.91,
+      "longitude": 72.825,
+      "elevation_m": 6.4,
+      "datum": "EGM96 / WGS84",
+      "source": "Copernicus GLO-30 DEM"
+    }
+  ],
+  "count": 6
+}

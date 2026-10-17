@@ -1,0 +1,9 @@
+{
+  "source_id": "worldpop_india",
+  "status": "SUCCESS",
+  "retrieval_timestamp": "2026-10-15T19:03:31.856878+00:00",
+  "duration_seconds": 0.84,
+  "records_ingested": 4,
+  "is_demo_fallback": false,
+  "details": "Normalized WorldPop 100m gridded density cells across Mumbai pilot wards."
+}

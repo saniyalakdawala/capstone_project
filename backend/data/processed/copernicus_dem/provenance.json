@@ -1,0 +1,9 @@
+{
+  "source_id": "copernicus_dem",
+  "status": "SUCCESS",
+  "retrieval_timestamp": "2026-10-15T19:03:31.015793+00:00",
+  "duration_seconds": 15.66,
+  "records_ingested": 6,
+  "is_demo_fallback": true,
+  "details": "Processed 6 calibrated elevation control points."
+}
