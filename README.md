@@ -49,7 +49,7 @@
                                           |
                                           v
 +---------------------------------------------------------------------------------+
-|                         React + TypeScript Vite Frontend                        |
+|                       Vite Web Frontend (HTML/CSS/JS)                           |
 |  - Warm Beige & Sage Editorial Aesthetic (DM Serif Display + Inter)             |
 |  - Interactive Multi-Layer Leaflet Map (Carto Light Basemap)                    |
 |  - Real-Time Flood Scenario Simulator & Mitigation Controls                     |

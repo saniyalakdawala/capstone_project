@@ -97,6 +97,7 @@ def analyze_route_accessibility(
     return res
 
 @router.get("/risk-map")
+@router.get("/analytics/risk-map")
 def get_risk_map_geojson(
     scenario_id: Optional[str] = Query("SCEN_HEAVY_200MM"),
     db: Session = Depends(get_db)
