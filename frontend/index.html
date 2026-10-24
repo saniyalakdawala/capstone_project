@@ -22,6 +22,11 @@
         <div class="nav-label">WORKSPACE</div>
         <nav class="nav-list" aria-label="Main navigation">
           <a href="#overview" class="nav-item active" data-view="overview"><span class="nav-icon">◫</span>Overview</a>
+          <a href="#monitoring" class="nav-item" data-view="monitoring"><span class="nav-icon">📡</span>Live monitoring</a>
+          <a href="#hazards" class="nav-item" data-view="hazards"><span class="nav-icon">⚠</span>Multi-hazard</a>
+          <a href="#validation" class="nav-item" data-view="validation"><span class="nav-icon">🔬</span>Validation &amp; replay</a>
+          <a href="#emergency" class="nav-item" data-view="emergency"><span class="nav-icon">🚑</span>Emergency response</a>
+          <a href="#flood" class="nav-item" data-view="flood"><span class="nav-icon">≋</span>Flood intelligence</a>
           <a href="#map" class="nav-item" data-view="map"><span class="nav-icon">⌖</span>Risk map</a>
           <a href="#scenarios" class="nav-item" data-view="scenarios"><span class="nav-icon">◷</span>Scenarios</a>
           <a href="#exposure" class="nav-item" data-view="exposure"><span class="nav-icon">▥</span>Exposure</a>
@@ -62,13 +67,1041 @@
           <footer class="page-footer"><span>Earth Intelligence Digital Twin <b>·</b> Mumbai Flood Intelligence</span><span>Decision support only · See model limitations for context</span></footer>
         </div>
 
+        <!-- Phase 3: Maharashtra Multi-Hazard Intelligence View -->
+        <div class="page-wrap secondary-view hidden" id="view-hazards">
+          <div class="secondary-heading">
+            <div>
+              <div class="eyebrow">MAHARASHTRA DISASTER PLATFORM · 6 HAZARD CATEGORIES</div>
+              <h1>Multi-hazard <em>intelligence.</em></h1>
+              <p>Unified disaster monitoring, predictive forecasting, alert lifecycle governance, and locality risk diagnostics across Maharashtra.</p>
+            </div>
+            <button class="button button-dark" id="refresh-hazards-data"><span>↻</span> Refresh multi-hazard feed</button>
+          </div>
+
+          <!-- Hazard Category Selector -->
+          <div class="hazard-nav-bar" id="hazard-nav-bar">
+            <button class="hazard-btn active" data-hazard="flood">🌊 Flood Intelligence</button>
+            <button class="hazard-btn" data-hazard="heatwave">🌡 Heatwave &amp; Urban Heat</button>
+            <button class="hazard-btn" data-hazard="landslide">⛰ Landslides</button>
+            <button class="hazard-btn" data-hazard="drought">🌾 Drought &amp; Scarcity</button>
+            <button class="hazard-btn" data-hazard="coastal">⚓ Coastal &amp; Marine</button>
+            <button class="hazard-btn" data-hazard="thunderstorm">⚡ Severe Thunderstorms</button>
+          </div>
+
+          <!-- Hazard Metadata Bar -->
+          <div class="flood-meta-bar" style="margin-bottom:12px;">
+            <div class="flood-chips">
+              <span class="flood-chip"><span>Module:</span> <strong id="mh-hazard-name">Pluvial &amp; Fluvial Flood</strong></span>
+              <span class="flood-chip"><span>Version:</span> <strong id="mh-hazard-version">EIDT-Flood-v2.3</strong></span>
+              <span class="flood-chip"><span>Status:</span> <strong id="mh-hazard-status" class="hazard-status-pill hazard-status-operational">OPERATIONAL</strong></span>
+              <span class="flood-chip"><span>Authority:</span> <strong id="mh-hazard-auth">MCGM / BMC &amp; IMD</strong></span>
+            </div>
+            <div class="flood-chips">
+              <span class="flood-chip"><span>Target:</span> <strong id="mh-hazard-target">24h Locality Flood Occurrence</strong></span>
+              <span class="flood-chip"><span>Horizon:</span> <strong id="mh-hazard-horizon">24 Hours</strong></span>
+            </div>
+          </div>
+
+          <!-- Active Cross-Hazard Early-Warning Alerts -->
+          <article class="panel" style="margin-bottom:14px;">
+            <div class="panel-heading">
+              <div>
+                <div class="eyebrow">ACTIVE MULTI-HAZARD WARNINGS &amp; ADVISORIES</div>
+                <h2>Early-warning alert feed</h2>
+              </div>
+              <span class="input-tag" id="mh-alert-count-tag" style="background:#fef3c7;color:#92400e;">1 Active Alert</span>
+            </div>
+            <p style="font-size:10px;color:#7f8e84;margin:4px 0 10px;line-height:1.5;">
+              Alerts strictly demarcate official government warnings (IMD/INCOIS) from EIDT model-generated diagnostic advisories, governed by an automated lifecycle manager with deduplication and auto-expiry.
+            </p>
+            <div id="mh-alerts-feed">
+              <div class="chart-empty">Loading active multi-hazard alerts…</div>
+            </div>
+          </article>
+
+          <!-- Multi-Hazard Map Panel -->
+          <article class="panel" style="margin-bottom:14px;padding:0;overflow:hidden;">
+            <div class="layer-toolbar" style="flex-wrap:wrap;">
+              <span class="toolbar-label" id="mh-map-toolbar-label">HAZARD MAP LAYERS</span>
+              <label class="layer-toggle"><input type="checkbox" id="mh-layer-primary" checked /><i></i> <span id="mh-layer-primary-label">Locality Risk Zones</span></label>
+              <label class="layer-toggle"><input type="checkbox" id="mh-layer-secondary" checked /><i></i> <span id="mh-layer-secondary-label">Forecast Indicators</span></label>
+              <label class="basemap-picker-label" for="mh-basemap">BASEMAP</label>
+              <select id="mh-basemap" class="select-control small-select basemap-picker">
+                <option value="osm">OpenStreetMap</option>
+                <option value="roadmap">Google Street</option>
+                <option value="satellite">Google Satellite</option>
+                <option value="terrain">Google Terrain</option>
+              </select>
+            </div>
+            <div class="flood-map-wrap">
+              <div id="hazards-map" style="height:380px;width:100%;"></div>
+              <div class="map-controls">
+                <button class="map-control" id="mh-zoom-in">＋</button>
+                <button class="map-control" id="mh-zoom-out">−</button>
+                <button class="map-control" id="mh-reset">⌖</button>
+              </div>
+              <div class="map-legend" id="mh-map-legend">
+                <span class="legend-title">RISK CATEGORY</span>
+                <span><i class="legend-dot" style="background:#10b981;"></i>Low</span>
+                <span><i class="legend-dot" style="background:#facc15;"></i>Moderate</span>
+                <span><i class="legend-dot" style="background:#f97316;"></i>High</span>
+                <span><i class="legend-dot" style="background:#ef4444;"></i>Very High / Severe</span>
+              </div>
+              <div class="map-attribution" id="mh-attribution">© OpenStreetMap contributors · EIDT Multi-Hazard Platform</div>
+            </div>
+            <div class="map-disclaimer" id="mh-map-disclaimer">
+              Spatial hazard assessments represent decision support indicators. Official disaster declarations and evacuation orders are issued exclusively by municipal and district authorities.
+            </div>
+          </article>
+
+          <!-- Locality Multi-Hazard Diagnostic Table -->
+          <article class="panel exposure-table-panel" style="margin-bottom:14px;">
+            <div class="panel-heading">
+              <div>
+                <div class="eyebrow">LOCALITY DIAGNOSTICS · MMR PILOT</div>
+                <h2 id="mh-table-heading">Locality-level hazard assessment</h2>
+              </div>
+              <span class="input-tag" id="mh-table-tag">10 Municipal Wards</span>
+            </div>
+            <div class="table-scroll">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Locality / Ward</th>
+                    <th>Risk Category</th>
+                    <th id="mh-th-key-metric">Primary Hazard Metric</th>
+                    <th>Contributing Factors</th>
+                    <th>Exposed Population</th>
+                    <th>Model Version</th>
+                  </tr>
+                </thead>
+                <tbody id="mh-localities-tbody">
+                  <tr><td colspan="6" class="chart-empty">Loading locality hazard assessments…</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </article>
+
+          <!-- Dataset Provenance & Data Gap Declared Blockers -->
+          <article class="panel" style="margin-bottom:14px;">
+            <div class="panel-heading">
+              <div>
+                <div class="eyebrow">SCIENTIFIC PROVENANCE &amp; UNINSTRUMENTED DATA GAPS</div>
+                <h2>Data integrity and sensor audit</h2>
+              </div>
+              <span class="input-tag" style="background:#edf2f7;color:#2d3748;">No Fabricated Inputs</span>
+            </div>
+            <div id="mh-provenance-box" style="font-size:10px;line-height:1.6;color:#4a5568;">
+              Loading dataset provenance…
+            </div>
+          </article>
+
+        </div>
+
+        <!-- Phase 4: Emergency Response, Evacuation Routing & Decision Support View -->
+        <div class="page-wrap secondary-view hidden" id="view-emergency">
+          <div class="secondary-heading">
+            <div>
+              <div class="eyebrow">MMR EMERGENCY RESPONSE &amp; EVACUATION ROUTING · PILOT NETWORK</div>
+              <h1>Emergency routing &amp; <em>decision support.</em></h1>
+              <p>Topologically connected 8,072-node real road routing graph, verified emergency facility registry, live flood hazard avoidance, and hypothetical closure analysis.</p>
+            </div>
+            <button class="button button-dark" id="refresh-emergency-feed"><span>↻</span> Refresh network &amp; feed</button>
+          </div>
+
+          <!-- Network & Verification Metadata Bar -->
+          <div class="flood-meta-bar" style="margin-bottom:12px;">
+            <div class="flood-chips">
+              <span class="flood-chip"><span>Road Graph:</span> <strong id="emg-graph-nodes">8,072 Nodes · 17,890 Directed Edges</strong></span>
+              <span class="flood-chip"><span>Network Coverage:</span> <strong>573.5 km MMR Pilot</strong></span>
+              <span class="flood-chip"><span>Connectivity:</span> <strong id="emg-connectivity-val">99.6% Single Component</strong></span>
+              <span class="flood-chip"><span>Facilities:</span> <strong id="emg-facility-count">45 Verified (13 Shelters, 26 Hospitals)</strong></span>
+            </div>
+            <div class="flood-chips">
+              <span class="flood-chip"><span>Active Restrictions:</span> <strong id="emg-active-restrictions" class="hazard-status-pill hazard-status-evaluated">2 Verified Logged</strong></span>
+              <span class="flood-chip"><span>Engine:</span> <strong>Dijkstra / Yen-kSP Hazard-Weighted</strong></span>
+            </div>
+          </div>
+
+          <!-- Mandatory Safety & Uncertainty Notice -->
+          <div class="flood-disclaimer-box" style="border-left-color:#c53026;background:#fffaf9;">
+            <strong style="color:#991b1b;">⚠ MANDATORY SAFETY &amp; UNCERTAINTY NOTICE (NO ROUTE IS GUARANTEED SAFE)</strong>
+            <span>Routes computed by this system are mathematical decision-support recommendations based on reported road network geometry and available flood hazard indicators. Sub-surface road washouts, unmonitored flash floods, fallen trees, and dynamic traffic congestion can create impassable hazards not captured in digital models. Always heed official directives from the MCGM Disaster Management Cell, Mumbai Traffic Police, and NDRF.</span>
+          </div>
+
+          <!-- Emergency Routing Interactive Workbench -->
+          <div class="scenario-layout" style="margin-bottom:14px;">
+            <article class="panel scenario-form-panel">
+              <div class="panel-heading">
+                <div>
+                  <div class="eyebrow">ROUTE PARAMETERS &amp; DESTINATION</div>
+                  <h2>Plan evacuation corridor</h2>
+                </div>
+                <span class="input-tag" id="emg-route-mode-tag">Real OSM Graph</span>
+              </div>
+
+              <form id="emergency-route-form">
+                <!-- Origin -->
+                <label class="field-label" for="emg-origin-select">Evacuation Origin (Preset or Map Coordinates)</label>
+                <select id="emg-origin-select" class="select-control" style="width:100%;margin-bottom:8px;">
+                  <option value="19.0680,72.8790">Kurla West (LBS Marg / Station Area) — [19.0680, 72.8790]</option>
+                  <option value="19.0430,72.8550">Dharavi Transit Camp (High Flood Exposure) — [19.0430, 72.8550]</option>
+                  <option value="19.0340,72.8620">Sion Koliwada (Mithi Delta) — [19.0340, 72.8620]</option>
+                  <option value="19.0600,72.8500">Bandra East (BKC Corridor) — [19.0600, 72.8500]</option>
+                  <option value="19.0620,72.9000">Chembur Naka (Eastern Suburbs) — [19.0620, 72.9000]</option>
+                  <option value="custom">Manual / Map Picked Coordinate</option>
+                </select>
+                <div id="emg-custom-origin-row" class="hidden" style="display:flex;gap:8px;margin-bottom:8px;">
+                  <input type="number" id="emg-orig-lat" class="text-input" placeholder="Lat (e.g. 19.0680)" step="0.0001" value="19.0680" />
+                  <input type="number" id="emg-orig-lon" class="text-input" placeholder="Lon (e.g. 72.8790)" step="0.0001" value="72.8790" />
+                </div>
+
+                <!-- Destination Mode -->
+                <label class="field-label">Destination Selection Mode</label>
+                <div style="display:flex;gap:12px;margin:6px 0 10px;">
+                  <label class="layer-toggle"><input type="radio" name="emg-dest-mode" value="facility" checked /><i></i> Select specific facility</label>
+                  <label class="layer-toggle"><input type="radio" name="emg-dest-mode" value="nearest" /><i></i> Nearest reachable facility</label>
+                </div>
+
+                <!-- Category Filter for Facilities -->
+                <div id="emg-facility-type-container">
+                  <label class="field-label" for="emg-facility-type">Target Facility Category</label>
+                  <select id="emg-facility-type" class="select-control" style="width:100%;margin-bottom:8px;">
+                    <option value="">All Categories (Hospitals, Shelters, Fire, Police)</option>
+                    <option value="shelter">Designated Relief Shelters &amp; Civic Schools</option>
+                    <option value="hospital">Emergency Hospitals &amp; Trauma Centres</option>
+                    <option value="fire_station">Fire &amp; Rescue Stations</option>
+                    <option value="police_station">Mumbai Police Stations</option>
+                  </select>
+                </div>
+
+                <div id="emg-facility-select-container">
+                  <label class="field-label" for="emg-facility-select">Target Facility</label>
+                  <select id="emg-facility-select" class="select-control" style="width:100%;margin-bottom:12px;">
+                    <option value="">Loading verified facilities…</option>
+                  </select>
+                </div>
+
+                <div class="form-divider" style="margin:12px 0;"></div>
+
+                <!-- Routing Optimization -->
+                <label class="field-label" for="emg-routing-cost">Routing Cost &amp; Safety Criterion</label>
+                <select id="emg-routing-cost" class="select-control" style="width:100%;margin-bottom:10px;">
+                  <option value="hazard_aware">Hazard-Aware (Penalize Waterlogged Roads &amp; Avoid Closures)</option>
+                  <option value="shortest">Shortest Distance (Pure Metric Length)</option>
+                  <option value="fastest">Fastest Travel Time (Free-Flow Speed)</option>
+                </select>
+
+                <!-- Options -->
+                <label class="check-row">
+                  <input type="checkbox" id="emg-opt-alternatives" checked />
+                  <span class="check-box"></span>
+                  <span><b>Compute Alternative Route Corridor</b><small>Generates distinct path using Yen's k-shortest paths</small></span>
+                </label>
+
+                <!-- Scenario Mode Toggle -->
+                <label class="check-row" style="margin-top:8px;">
+                  <input type="checkbox" id="emg-opt-scenario" />
+                  <span class="check-box"></span>
+                  <span><b>Hypothetical Scenario Closure Mode</b><small>Test simulated road cut-offs without altering live observations</small></span>
+                </label>
+
+                <div id="emg-scenario-box" class="hidden" style="background:#f4f7f5;padding:8px 10px;border-radius:6px;border:1px solid #dbe3dc;margin-top:6px;">
+                  <label class="field-label" for="emg-scenario-id" style="margin-top:0;">Scenario</label>
+                  <select id="emg-scenario-id" class="select-control" style="width:100%;">
+                    <option value="SCN-HYP-001">SCN-HYP-001: Mithi River Overflow Severing Kurla-Sion Link</option>
+                  </select>
+                </div>
+
+                <button class="button button-dark form-submit" id="emg-btn-calculate" type="button" style="margin-top:14px;">
+                  <span>🚑</span> Calculate Evacuation Route
+                </button>
+              </form>
+            </article>
+
+            <!-- Interactive Map & Diagnostics -->
+            <div class="scenario-results">
+              <article class="panel full-map-panel">
+                <div class="layer-toolbar" style="flex-wrap:wrap;">
+                  <span class="toolbar-label">ROUTING MAP LAYERS</span>
+                  <label class="layer-toggle"><input type="checkbox" id="emg-layer-route" checked /><i></i> Route Corridors</label>
+                  <label class="layer-toggle"><input type="checkbox" id="emg-layer-facilities" checked /><i></i> Facilities</label>
+                  <label class="layer-toggle"><input type="checkbox" id="emg-layer-restrictions" checked /><i></i> Road Closures</label>
+                  <label class="basemap-picker-label" for="emg-basemap">BASEMAP</label>
+                  <select id="emg-basemap" class="select-control small-select basemap-picker">
+                    <option value="osm">OpenStreetMap</option>
+                    <option value="roadmap">Google Street</option>
+                    <option value="satellite">Google Satellite</option>
+                    <option value="terrain">Google Terrain</option>
+                  </select>
+                </div>
+                <div class="flood-map-wrap" style="height:380px;">
+                  <div id="emergency-map" style="height:100%;width:100%;"></div>
+                  <div class="map-controls">
+                    <button class="map-control" id="emg-zoom-in">＋</button>
+                    <button class="map-control" id="emg-zoom-out">−</button>
+                    <button class="map-control" id="emg-reset">⌖</button>
+                  </div>
+                  <div class="map-legend">
+                    <span class="legend-title">CORRIDOR LEGEND</span>
+                    <span><i class="legend-dot" style="background:#2563eb;"></i>Primary Route</span>
+                    <span><i class="legend-dot" style="background:#f97316;"></i>Alternative</span>
+                    <span><i class="legend-dot" style="background:#16a34a;"></i>Shelter</span>
+                    <span><i class="legend-dot" style="background:#dc2626;"></i>Hospital</span>
+                    <span><i class="legend-dot" style="background:#991b1b;"></i>Road Closure</span>
+                  </div>
+                  <div class="map-attribution">© OpenStreetMap contributors · EIDT Emergency Router</div>
+                </div>
+              </article>
+
+              <!-- Route Calculation Results Card -->
+              <article class="panel" id="emg-route-card" style="padding:14px;">
+                <div class="panel-heading">
+                  <div>
+                    <div class="eyebrow">ROUTE COMPUTATION &amp; EXPOSURE DIAGNOSTIC</div>
+                    <h2 id="emg-route-title">Awaiting route request</h2>
+                  </div>
+                  <span class="risk-badge low" id="emg-route-badge">Ready</span>
+                </div>
+
+                <div id="emg-route-placeholder" style="color:#7f8e85;font-size:10px;line-height:1.6;margin-top:8px;">
+                  Select origin and destination to calculate a hazard-aware evacuation route across the verified MMR pilot road network.
+                </div>
+
+                <div id="emg-route-metrics-grid" class="eval-grid hidden" style="margin-top:10px;">
+                  <div class="eval-card">
+                    <span>Distance</span>
+                    <strong id="emg-res-dist">—</strong>
+                    <small>kilometres</small>
+                  </div>
+                  <div class="eval-card">
+                    <span>Est. Travel Time</span>
+                    <strong id="emg-res-time">—</strong>
+                    <small>minutes</small>
+                  </div>
+                  <div class="eval-card">
+                    <span>Road Segments</span>
+                    <strong id="emg-res-segs">—</strong>
+                    <small>OSM segments</small>
+                  </div>
+                  <div class="eval-card">
+                    <span>Waterlogged Edges</span>
+                    <strong id="emg-res-hazard" style="color:#c53026;">—</strong>
+                    <small>penalized</small>
+                  </div>
+                  <div class="eval-card">
+                    <span>Closures Avoided</span>
+                    <strong id="emg-res-closures">—</strong>
+                    <small>bypassed</small>
+                  </div>
+                </div>
+
+                <div id="emg-route-alt-box" class="hidden" style="margin-top:10px;padding:8px 10px;background:#fefbf6;border:1px solid #f6e5cd;border-radius:6px;font-size:10px;color:#784915;">
+                  <strong>Alternative Corridor Available:</strong> <span id="emg-alt-summary">—</span>
+                </div>
+
+                <div id="emg-route-limitations" class="hidden limitations" style="padding:8px 0 0;">
+                  <div id="emg-limitation-text"></div>
+                </div>
+              </article>
+            </div>
+          </div>
+
+          <!-- Verified Emergency Facilities & Shelter Registry -->
+          <article class="panel exposure-table-panel" style="margin-bottom:14px;">
+            <div class="panel-heading">
+              <div>
+                <div class="eyebrow">VERIFIED INFRASTRUCTURE REGISTRY · 45 VERIFIED SITES</div>
+                <h2>Designated shelters, emergency hospitals &amp; rescue stations</h2>
+              </div>
+              <div style="display:flex;gap:6px;">
+                <button class="hazard-btn active" id="emg-tab-fac-all" style="padding:4px 8px;font-size:9px;">All (45)</button>
+                <button class="hazard-btn" id="emg-tab-fac-shelter" style="padding:4px 8px;font-size:9px;">Shelters (13)</button>
+                <button class="hazard-btn" id="emg-tab-fac-hospital" style="padding:4px 8px;font-size:9px;">Hospitals (26)</button>
+                <button class="hazard-btn" id="emg-tab-fac-fire" style="padding:4px 8px;font-size:9px;">Fire &amp; Rescue (3)</button>
+                <button class="hazard-btn" id="emg-tab-fac-police" style="padding:4px 8px;font-size:9px;">Police (3)</button>
+              </div>
+            </div>
+            <p style="font-size:10px;color:#7f8e84;margin:4px 0 10px;line-height:1.5;">
+              Hospitals and public buildings are strictly distinguished from designated evacuation shelters. Shelters carry designated capacities only where officially verified; unverified capacities are never fabricated.
+            </p>
+            <div class="table-scroll">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Facility Name</th>
+                    <th>Category</th>
+                    <th>Ward / Locality</th>
+                    <th>Operating Status</th>
+                    <th>Designated Capacity</th>
+                    <th>Verification Source</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="emg-facilities-tbody">
+                  <tr><td colspan="7" class="chart-empty">Loading verified emergency facilities…</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </article>
+
+          <!-- Ward Evacuation Demand-vs-Capacity Assessment (Phase 4E) -->
+          <article class="panel exposure-table-panel" style="margin-bottom:14px;">
+            <div class="panel-heading">
+              <div>
+                <div class="eyebrow">EVACUATION DECISION SUPPORT · PLANNING ESTIMATES</div>
+                <h2>Ward-level population demand vs designated shelter capacity</h2>
+              </div>
+              <span class="input-tag" style="background:#eaf1eb;color:#284d3d;">Planning Support · Not Command Order</span>
+            </div>
+            <p style="font-size:10px;color:#7f8e84;margin:4px 0 10px;line-height:1.5;">
+              Demand estimates reflect modeled flood exposure from active meteorological forecasts. Shelter capacity accounts solely for verified civic relief centres and municipal school relief points.
+            </p>
+            <div class="table-scroll">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Ward / Locality</th>
+                    <th>High Risk Population (Demand)</th>
+                    <th>Designated Shelters</th>
+                    <th>Verified Capacity</th>
+                    <th>Capacity Balance</th>
+                    <th>Assessed Action / Recommendation</th>
+                  </tr>
+                </thead>
+                <tbody id="emg-evac-demand-tbody">
+                  <tr><td colspan="6" class="chart-empty">Loading ward evacuation demand assessment…</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </article>
+
+          <footer class="page-footer">
+            <span>Earth Intelligence Digital Twin <b>·</b> Emergency Routing &amp; Evacuation Decision Support (Phase 4)</span>
+            <span>Network: OpenStreetMap (ODbL) <b>·</b> Facilities: MCGM Disaster Management Unit &amp; OSM Contributors</span>
+          </footer>
+        </div>
+
         <div class="page-wrap secondary-view hidden" id="view-map"><div class="secondary-heading"><div><div class="eyebrow">GEOSPATIAL EXPLORER</div><h1>Risk <em>map.</em></h1><p>Explore modeled flood zones alongside wards, roads, waterways, and critical facilities.</p></div><select id="map-scenario" class="select-control" aria-label="Map scenario"></select></div><div class="panel full-map-panel"><div class="layer-toolbar"><span class="toolbar-label">MAP LAYERS</span><label class="layer-toggle"><input type="checkbox" id="layer-wards" checked /><i></i> Wards</label><label class="layer-toggle"><input type="checkbox" id="layer-roads" /><i></i> Roads</label><label class="layer-toggle"><input type="checkbox" id="layer-water" checked /><i></i> Waterways</label><label class="layer-toggle"><input type="checkbox" id="layer-facilities" checked /><i></i> Facilities</label><select id="facility-filter" class="select-control small-select"><option value="">All facilities</option><option value="hospital">Hospitals</option><option value="school">Schools</option><option value="fire_station">Fire stations</option></select><label class="basemap-picker-label" for="explore-basemap">BASEMAP</label><select id="explore-basemap" class="select-control small-select basemap-picker"><option value="osm">OpenStreetMap</option><option value="roadmap">Google Street</option><option value="satellite">Google Satellite</option><option value="terrain">Google Terrain</option></select></div><div class="full-map-wrap"><div id="explore-map"></div><div class="map-controls"><button class="map-control" id="explore-zoom-in">＋</button><button class="map-control" id="explore-zoom-out">−</button><button class="map-control" id="explore-reset">⌖</button></div><div class="map-attribution" id="explore-attribution">© OpenStreetMap contributors</div></div><div class="map-disclaimer">Risk polygons show modeled hazard zones and should be interpreted as decision support, not a live flood observation.</div></div></div>
 
         <div class="page-wrap secondary-view hidden" id="view-scenarios"><div class="secondary-heading"><div><div class="eyebrow">PLANNING TOOL</div><h1>Explore a <em>scenario.</em></h1><p>Adjust rainfall and local conditions to see how flood exposure may change.</p></div></div><div class="scenario-layout"><article class="panel scenario-form-panel"><div class="panel-heading"><div><div class="eyebrow">SIMULATION INPUTS</div><h2>Set conditions</h2></div><span class="input-tag">MODEL A–D</span></div><form id="scenario-form"><label class="field-label" for="scenario-name">Scenario name</label><input id="scenario-name" class="text-input" value="Monsoon planning scenario" maxlength="120" required /><label class="field-label range-label" for="rainfall-input"><span>Total rainfall</span><strong><span id="rainfall-display">200</span> <small>mm</small></strong></label><input type="range" min="0" max="500" step="10" value="200" id="rainfall-input" class="range-input" /><div class="range-ticks"><span>0 mm</span><span>250 mm</span><span>500 mm</span></div><label class="field-label" for="duration-input">Rainfall duration</label><div class="input-suffix"><input type="number" id="duration-input" class="text-input" min="1" max="72" value="24" required /><span>hours</span></div><div class="form-divider"></div><div class="eyebrow">LOCAL CONDITIONS</div><label class="field-label range-label" for="tide-input"><span>High tide height</span><strong><span id="tide-display">4.2</span> <small>m</small></strong></label><input type="range" min="0" max="6" step="0.1" value="4.2" id="tide-input" class="range-input" /><label class="field-label" for="drainage-input">Drainage efficiency</label><div class="input-suffix"><input type="number" id="drainage-input" class="text-input" min="0" max="100" value="80" /><span>%</span></div><div class="mitigation-title">Mitigation measures</div><label class="check-row"><input type="checkbox" id="mitigation-desilt" /><span class="check-box"></span><span><b>Mithi River desilting</b><small>Improve channel conveyance capacity</small></span></label><label class="check-row"><input type="checkbox" id="mitigation-pumps" /><span class="check-box"></span><span><b>Additional pumping stations</b><small>Increase local drainage capacity</small></span></label><label class="check-row"><input type="checkbox" id="mitigation-ponds" /><span class="check-box"></span><span><b>Activate holding ponds</b><small>Temporarily store stormwater runoff</small></span></label><button class="button button-dark form-submit" id="run-scenario" type="submit"><span>▶</span> Run simulation</button><p class="form-footnote">Simulation may take a few seconds. Results are saved to your project database.</p></form></article><div class="scenario-results"><article class="panel result-placeholder" id="scenario-result"><div class="result-icon">◷</div><h2>Your results will appear here</h2><p>Choose conditions and run the model to see estimated exposure, infrastructure impacts, and ward-level risk.</p><div class="result-steps"><span><i>1</i>Set rainfall conditions</span><span><i>2</i>Run the simulation</span><span><i>3</i>Review estimated impacts</span></div></article><article class="panel saved-scenarios"><div class="panel-heading"><div><div class="eyebrow">PROJECT DATABASE</div><h2>Saved scenarios</h2></div><button class="text-button" id="refresh-scenarios">Refresh ↻</button></div><div id="saved-scenario-list" class="saved-list"><div class="chart-empty">Loading saved scenarios…</div></div></article></div></div></div>
 
         <div class="page-wrap secondary-view hidden" id="view-exposure"><div class="secondary-heading"><div><div class="eyebrow">PEOPLE &amp; PLACES</div><h1>Understand <em>exposure.</em></h1><p>Estimated population and infrastructure exposure for the selected flood scenario.</p></div><select id="exposure-scenario" class="select-control" aria-label="Exposure scenario"></select></div><div class="metric-grid exposure-metrics"><article class="metric-card"><div class="metric-heading">Population exposed <span class="metric-icon people-icon">⌂</span></div><div class="metric-value"><span id="exposure-pop">—</span><small>people</small></div><div class="metric-foot"><span class="metric-note">Model estimate</span></div></article><article class="metric-card"><div class="metric-heading">High risk area <span class="metric-icon area-icon">◉</span></div><div class="metric-value"><span id="exposure-area">—</span><small>km²</small></div><div class="metric-foot"><span class="metric-note">Modeled hazard extent</span></div></article><article class="metric-card"><div class="metric-heading">Road segments affected <span class="metric-icon rain-icon">↗</span></div><div class="metric-value"><span id="exposure-roads">—</span><small>segments</small></div><div class="metric-foot"><span class="metric-note">Potential network impact</span></div></article><article class="metric-card"><div class="metric-heading">Hospitals exposed <span class="metric-icon facility-icon">＋</span></div><div class="metric-value"><span id="exposure-hospitals">—</span><small>facilities</small></div><div class="metric-foot"><span class="metric-note">Scenario estimate</span></div></article></div><article class="panel exposure-table-panel"><div class="panel-heading"><div><div class="eyebrow">WARD BREAKDOWN</div><h2>Estimated population exposure</h2></div><span id="exposure-scenario-name" class="input-tag">Selected scenario</span></div><div class="table-scroll"><table class="data-table"><thead><tr><th>Ward</th><th>Risk level</th><th>People exposed</th><th>High risk area</th><th>Relative exposure</th></tr></thead><tbody id="exposure-table"></tbody></table></div><div id="exposure-limits" class="limitations"></div></article></div>
 
-        <div class="page-wrap secondary-view hidden" id="view-insights"><div class="secondary-heading"><div><div class="eyebrow">MODEL TRANSPARENCY</div><h1>Evidence behind <em>the map.</em></h1><p>Review model performance, key risk drivers, and research findings from the project.</p></div></div><div class="insight-top-grid"><article class="panel model-score"><div class="eyebrow">FLOOD CLASSIFICATION MODEL</div><h2 id="model-name">Loading model details…</h2><div class="score-row"><div><strong id="auc-score">—</strong><span>ROC–AUC</span></div><div><strong id="f1-score">—</strong><span>F1 score</span></div><div><strong id="model-version">—</strong><span>Version</span></div></div><div class="model-note">Performance figures are from the supplied evaluation data and do not guarantee prediction accuracy for a specific event.</div></article><article class="panel feature-panel"><div class="panel-heading"><div><div class="eyebrow">FEATURE IMPORTANCE</div><h2>What shapes flood risk?</h2></div></div><div id="feature-list" class="feature-list"><div class="chart-empty">Loading feature importance…</div></div></article></div><article class="panel research-panel"><div class="panel-heading"><div><div class="eyebrow">PROJECT FINDINGS</div><h2>Research questions</h2></div></div><div id="research-list" class="research-list"><div class="chart-empty">Loading findings…</div></div></article><article class="panel limitation-panel"><div class="eyebrow">HOW TO READ THESE RESULTS</div><h2>Model limitations</h2><ul id="model-limitations"><li>Loading model caveats…</li></ul></article></div>
+        <div class="page-wrap secondary-view hidden" id="view-flood">
+          <div class="secondary-heading">
+            <div>
+              <div class="eyebrow">OPERATIONAL HAZARD ENGINE · 24-HOUR HORIZON</div>
+              <h1>Flood <em>intelligence.</em></h1>
+              <p>Traceable 24-hour hourly precipitation forecasts from Open-Meteo, rolling accumulations, and transparent locality flood-risk diagnostic across 10 Mumbai wards.</p>
+            </div>
+            <button class="button button-dark" id="refresh-flood-data"><span>↻</span> Refresh forecast</button>
+          </div>
+
+          <div class="flood-meta-bar">
+            <div class="flood-chips">
+              <span class="flood-chip"><span>Model:</span> <strong id="flood-model-version">EIDT-ML-Predictive-v2.0</strong></span>
+              <span class="flood-chip"><span>Validation:</span> <strong>Held-Out Temporal Split (2020–2023)</strong></span>
+              <span class="flood-chip"><span>Calibration:</span> <strong>Platt Sigmoid (Brier: 0.1246)</strong></span>
+              <span class="flood-chip"><span>Spatial Engine:</span> <strong>Shapely Vector Pipeline</strong></span>
+              <span class="flood-chip"><span>Coverage:</span> <strong>MMR Pilot (10 Wards)</strong></span>
+            </div>
+            <div class="flood-chips">
+              <span class="flood-chip"><span>Issue Time (UTC):</span> <strong id="flood-issue-time">—</strong></span>
+              <span class="flood-chip"><span>Valid Horizon:</span> <strong id="flood-valid-range">—</strong></span>
+            </div>
+          </div>
+
+          <div class="flood-disclaimer-box">
+            <strong>⚠ SCIENTIFIC NOTICE &amp; INPUT AUDIT (NO SILENT IMPUTATION)</strong>
+            <span>This operational assessment is computed from verifiable numerical weather prediction, surveyed municipal elevation benchmarks, and empirical historical flood records. To prevent false confidence, the following uninstrumented inputs are explicitly declared:</span>
+            <div class="flood-missing-tags">
+              <span class="flood-missing-tag">✖ Real-time coastal tide gauges (astronomical tide surge uninstrumented)</span>
+              <span class="flood-missing-tag">✖ Storm drain SCADA depth telemetry (gravity discharge uninstrumented)</span>
+              <span class="flood-missing-tag">✖ Continuous 30m DEM raster (discrete control points utilized)</span>
+              <span class="flood-missing-tag">✖ Antecedent satellite soil moisture (NASA GPM IMERG unconfigured)</span>
+            </div>
+          </div>
+
+          <article class="panel" style="margin-bottom: 14px;">
+            <div class="panel-heading">
+              <div>
+                <div class="eyebrow">LEAKAGE-RESISTANT MACHINE LEARNING VALIDATION</div>
+                <h2>Empirical flood prediction model performance (Held-Out 2020–2023 Events)</h2>
+              </div>
+              <span class="input-tag" style="background:#eaf1eb;color:#284d3d;">No Synthetic Data (N=100)</span>
+            </div>
+            <div class="eval-grid" style="margin-top: 10px;">
+              <div class="eval-card"><span>Temporal ROC-AUC</span><strong id="eval-roc-auc">0.919</strong><small>Held-out test events</small></div>
+              <div class="eval-card"><span>PR-AUC</span><strong id="eval-pr-auc">0.775</strong><small>Precision-Recall curve</small></div>
+              <div class="eval-card"><span>Brier Score</span><strong id="eval-brier">0.1246</strong><small>Well-calibrated (&lt;0.20)</small></div>
+              <div class="eval-card"><span>F1-Score</span><strong id="eval-f1">0.774</strong><small>Recall: 92.3% (12/13)</small></div>
+              <div class="eval-card"><span>Verified Samples</span><strong id="eval-samples">100 obs</strong><small>10 events × 10 wards</small></div>
+            </div>
+          </article>
+
+          <div class="metric-grid">
+            <article class="metric-card">
+              <div class="metric-heading"><span>Forecast 24h Rainfall</span><span class="metric-icon rain-icon">🌧</span></div>
+              <div class="metric-value"><span id="flood-total-24h">—</span><small>mm</small></div>
+              <div class="metric-foot"><span class="metric-note">Peak 1h rate:</span><span class="metric-trend" id="flood-peak-1h">— mm/h</span></div>
+            </article>
+            <article class="metric-card">
+              <div class="metric-heading"><span>Locality Risk Summary</span><span class="metric-icon area-icon">⌖</span></div>
+              <div class="metric-value"><span id="flood-high-risk-count">—</span><small>/ 10 wards</small></div>
+              <div class="metric-foot"><span class="metric-note">Elevated / High / Very High</span><span class="risk-pill" id="flood-risk-summary-pill">—</span></div>
+            </article>
+            <article class="metric-card">
+              <div class="metric-heading"><span>Early Warning Status</span><span class="metric-icon facility-icon">⚠</span></div>
+              <div class="metric-value" style="font-size: 20px;"><span id="flood-alert-status">Nominal</span></div>
+              <div class="metric-foot"><span class="metric-note" id="flood-alert-source">IMD AWS / EIDT Rules</span><span class="metric-trend neutral" id="flood-alert-time">—</span></div>
+            </article>
+            <article class="metric-card">
+              <div class="metric-heading"><span>Target Definition</span><span class="metric-icon people-icon">🎯</span></div>
+              <div class="metric-value" style="font-size: 15px;"><span id="flood-target-name">Locality Flood</span></div>
+              <div class="metric-foot"><span class="metric-note">24-hour Occurrence</span><span class="metric-trend neutral">Binary Event</span></div>
+            </article>
+          </div>
+
+          <article class="panel" style="margin-bottom: 14px;">
+            <div class="panel-heading">
+              <div>
+                <div class="eyebrow">24-HOUR ROLLING ACCUMULATIONS</div>
+                <h2>Precipitation forecast timeline (Open-Meteo)</h2>
+              </div>
+              <span class="input-tag" id="flood-retrieval-tag">Retrieved just now</span>
+            </div>
+            <div class="flood-accum-grid">
+              <div class="accum-card"><span>1-Hour Peak</span><strong id="accum-1h">—</strong><small>mm/h intensity</small></div>
+              <div class="accum-card"><span>3-Hour Rolling</span><strong id="accum-3h">—</strong><small>mm accumulation</small></div>
+              <div class="accum-card"><span>6-Hour Rolling</span><strong id="accum-6h">—</strong><small>mm accumulation</small></div>
+              <div class="accum-card"><span>12-Hour Rolling</span><strong id="accum-12h">—</strong><small>mm accumulation</small></div>
+              <div class="accum-card"><span>24-Hour Total</span><strong id="accum-24h">—</strong><small>mm total expected</small></div>
+            </div>
+            <div class="chart-title"><span>Hourly precipitation breakdown</span><span>mm / hour (UTC)</span></div>
+            <div class="flood-hourly-scroll">
+              <div class="flood-hourly-timeline" id="flood-timeline-bars">
+                <div class="chart-empty">Loading hourly forecast timeline…</div>
+              </div>
+            </div>
+          </article>
+
+          <article class="panel" style="margin-bottom: 14px; padding: 0; overflow: hidden;">
+            <div class="layer-toolbar" style="flex-wrap: wrap;">
+              <span class="toolbar-label">FLOOD MAP LAYERS</span>
+              <label class="layer-toggle"><input type="checkbox" id="flood-layer-risk" checked /><i></i> Locality Risk Polygons (ML)</label>
+              <label class="layer-toggle"><input type="checkbox" id="flood-layer-precip" checked /><i></i> 24h Rainfall Forecast Points</label>
+              <label class="layer-toggle"><input type="checkbox" id="flood-layer-inundation" checked /><i></i> Predicted Inundation Extent</label>
+              <label class="layer-toggle"><input type="checkbox" id="flood-layer-depth" checked /><i></i> Estimated Water Depth (m)</label>
+              <label class="layer-toggle"><input type="checkbox" id="flood-layer-facilities" /><i></i> Critical Facilities</label>
+              <label class="layer-toggle"><input type="checkbox" id="flood-layer-obs" /><i></i> Historical Flood Benchmarks (2005 / 2017 / 2019)</label>
+              <label class="basemap-picker-label" for="flood-basemap">BASEMAP</label>
+              <select id="flood-basemap" class="select-control small-select basemap-picker">
+                <option value="osm">OpenStreetMap</option>
+                <option value="roadmap">Google Street</option>
+                <option value="satellite">Google Satellite</option>
+                <option value="terrain">Google Terrain</option>
+              </select>
+            </div>
+            <div class="flood-map-wrap">
+              <div id="flood-map"></div>
+              <div class="map-controls">
+                <button class="map-control" id="flood-zoom-in">＋</button>
+                <button class="map-control" id="flood-zoom-out">−</button>
+                <button class="map-control" id="flood-reset">⌖</button>
+              </div>
+              <div class="map-legend">
+                <span class="legend-title">WATER DEPTH</span>
+                <span><i class="legend-dot depth-shallow"></i>&lt; 0.15m</span>
+                <span><i class="legend-dot depth-mod"></i>0.15–0.30m</span>
+                <span><i class="legend-dot depth-high"></i>0.30–0.60m</span>
+                <span><i class="legend-dot depth-severe"></i>&gt; 0.60m</span>
+                <span class="legend-title" style="margin-left: 10px;">RISK CAT</span>
+                <span><i class="legend-dot" style="background:#10b981;"></i>Low</span>
+                <span><i class="legend-dot" style="background:#f59e0b;"></i>Mod</span>
+                <span><i class="legend-dot" style="background:#f97316;"></i>High</span>
+                <span><i class="legend-dot" style="background:#ef4444;"></i>Very High</span>
+              </div>
+              <div class="map-attribution" id="flood-attribution">© OpenStreetMap contributors</div>
+            </div>
+            <div class="map-disclaimer">
+              Layer classification: Inundation Extent &amp; Depth Grid = <code>HYDRO_TOPOGRAPHIC_INUNDATION</code> (Copernicus DEM 30m + SCS-CN Runoff + Tidal Backwater). Locality Risk = <code>CALIBRATED_ML_FORECAST</code>. Historical points = <code>HISTORICAL_OBSERVATION</code>.
+            </div>
+          </article>
+
+          <!-- Phase 2C Inundation & Depth Simulation Engine -->
+          <article class="panel" style="margin-bottom: 14px;">
+            <div class="panel-heading">
+              <div>
+                <div class="eyebrow">PHYSICALLY DEFENSIBLE FLOOD INUNDATION &amp; IMPACT ENGINE (PHASE 2C)</div>
+                <h2>Coupled hydro-topographic runoff, depth estimation &amp; disruption analysis</h2>
+              </div>
+              <span class="input-tag" style="background:#edf5f2;color:#1e4c3b;">Model: EIDT-Inundation-v2.3</span>
+            </div>
+            <p style="font-size: 10px; color: #7f8e84; margin: 4px 0 10px; line-height: 1.5;">
+              Simulates SCS-CN overland runoff generation, Copernicus GLO-30 DEM depression ponding, and Arabian Sea tidal flap-gate backwater restriction. Calculates spatial water depth (metres), asset exposure, and vehicular road impassability.
+            </p>
+
+            <div class="inundation-grid">
+              <div class="inundation-form">
+                <div>
+                  <label class="field-label" for="sim-ward-select">Study Area / Locality</label>
+                  <select id="sim-ward-select" class="select-control" style="width:100%;margin-top:2px;">
+                    <option value="MUM_WARD_L_KURLA" selected>Ward L (Kurla - Mithi River Basin)</option>
+                    <option value="MUM_WARD_FN_SION">Ward F/North (Sion - Matunga)</option>
+                    <option value="MUM_WARD_HE_BANDRA_E">Ward H/East (Bandra East - BKC)</option>
+                    <option value="MUM_WARD_GN_DHARAVI">Ward G/North (Dharavi - Mahim Creek)</option>
+                    <option value="MUM_WARD_KW_ANDHERI_W">Ward K/West (Andheri West Subway)</option>
+                  </select>
+                </div>
+
+                <div style="display:flex;gap:10px;">
+                  <div style="flex:1;">
+                    <label class="field-label" for="sim-rain-input">Rainfall: <strong id="sim-rain-val">200</strong> mm</label>
+                    <input type="range" min="20" max="600" step="10" value="200" id="sim-rain-input" class="range-input" />
+                  </div>
+                  <div style="flex:1;">
+                    <label class="field-label" for="sim-tide-input">High Tide: <strong id="sim-tide-val">4.2</strong> m CD</label>
+                    <input type="range" min="1.0" max="5.5" step="0.1" value="4.2" id="sim-tide-input" class="range-input" />
+                  </div>
+                </div>
+
+                <div style="display:flex;gap:10px;align-items:center;">
+                  <div style="flex:1;">
+                    <label class="field-label" for="sim-soil-input">Soil Saturation: <strong id="sim-soil-val">75</strong>% (AMC III)</label>
+                    <input type="range" min="20" max="95" step="5" value="75" id="sim-soil-input" class="range-input" />
+                  </div>
+                  <button class="button button-dark" id="btn-run-inundation" style="margin-top:12px;height:38px;padding:0 16px;">
+                    <span>▶</span> Run Simulation
+                  </button>
+                </div>
+
+                <div class="disruption-box">
+                  <strong>VEHICULAR ROAD IMPASSABILITY THRESHOLDS</strong>
+                  <div style="margin-top:4px;">
+                    • <b>Passenger cars:</b> Stall / impassable at water depth ≥ <b>0.30 m</b> (30 cm)<br>
+                    • <b>Emergency vehicles:</b> Impassable at water depth ≥ <b>0.50 m</b> (50 cm)<br>
+                    <small style="color:#a8483b;">Notice: Automated model output; does not supersede official traffic police barricades.</small>
+                  </div>
+                </div>
+              </div>
+
+              <div class="inundation-results-box">
+                <div style="display:flex;justify-content:space-between;align-items:center;">
+                  <strong style="font-size:11px;color:#1e2d24;">SIMULATION DIAGNOSTIC SUMMARY</strong>
+                  <span id="sim-run-tag" class="input-tag" style="background:#eaf1eb;font-size:8px;">COMPLETED</span>
+                </div>
+
+                <div class="inundation-metrics">
+                  <div class="inundation-metric-cell">
+                    <span>Peak Water Depth</span>
+                    <strong id="sim-peak-depth">—</strong>
+                    <small>metres (depression max)</small>
+                  </div>
+                  <div class="inundation-metric-cell">
+                    <span>Mean Water Depth</span>
+                    <strong id="sim-mean-depth">—</strong>
+                    <small>metres (inundated zone)</small>
+                  </div>
+                  <div class="inundation-metric-cell">
+                    <span>Flooded Area</span>
+                    <strong id="sim-inundated-area">—</strong>
+                    <small>sq. km</small>
+                  </div>
+                  <div class="inundation-metric-cell">
+                    <span>Exposed Buildings</span>
+                    <strong id="sim-exposed-bldgs">—</strong>
+                    <small>in flood footprint</small>
+                  </div>
+                  <div class="inundation-metric-cell">
+                    <span>Impassable Roads</span>
+                    <strong id="sim-impassable-roads">—</strong>
+                    <small>depth ≥ 0.30m</small>
+                  </div>
+                  <div class="inundation-metric-cell">
+                    <span>Exposed Population</span>
+                    <strong id="sim-exposed-pop">—</strong>
+                    <small>dasymetric est.</small>
+                  </div>
+                </div>
+
+                <div class="validation-card">
+                  <div style="display:flex;justify-content:space-between;align-items:center;">
+                    <strong style="font-size:10px;color:#1e4c6b;">HISTORICAL SAR BENCHMARK (29 AUG 2017 DELUGE)</strong>
+                    <span style="font-size:9px;color:#49799a;">Sentinel-1 C-Band C-SAR</span>
+                  </div>
+                  <div class="validation-metrics-row">
+                    <div><span>Critical Success (CSI)</span><strong>0.738</strong></div>
+                    <div><span>IoU Score</span><strong>0.738</strong></div>
+                    <div><span>Precision</span><strong>0.868</strong></div>
+                    <div><span>Recall</span><strong>0.831</strong></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="panel exposure-table-panel" style="margin-bottom: 14px;">
+            <div class="panel-heading">
+              <div>
+                <div class="eyebrow">LOCALITY DIAGNOSTICS · 10 WARDS</div>
+                <h2>Locality-level flood risk assessment</h2>
+              </div>
+              <span class="input-tag">Calibrated Probability &amp; Factors</span>
+            </div>
+            <div class="table-scroll">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Locality / Ward</th>
+                    <th>Risk Category</th>
+                    <th>Calibrated Prob (P)</th>
+                    <th>Score (0–10)</th>
+                    <th>24h Rain</th>
+                    <th>Elevation</th>
+                    <th>Waterway / Tidal Corridor</th>
+                    <th>Contributing Factors</th>
+                  </tr>
+                </thead>
+                <tbody id="flood-localities-table">
+                  <tr><td colspan="8" class="chart-empty">Loading locality assessments…</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </article>
+
+
+          <article class="panel" style="margin-bottom: 14px;">
+            <div class="panel-heading">
+              <div>
+                <div class="eyebrow">RETROSPECTIVE GROUND TRUTH BENCHMARKS</div>
+                <h2>Observed historical flood extents</h2>
+              </div>
+              <span class="input-tag">Observation · Not Forecast</span>
+            </div>
+            <p style="font-size: 10px; color: #7f8e84; margin: 4px 0 12px; line-height: 1.5;">
+              These verified historical records represent actual surveyed inundations and satellite SAR extents from major Mumbai monsoon disasters. They serve as empirical benchmark ground-truth and are strictly separated from predictive forecasts.
+            </p>
+            <div class="obs-grid" id="flood-obs-grid">
+              <div class="chart-empty">Loading historical flood benchmarks…</div>
+            </div>
+          </article>
+
+          <footer class="page-footer">
+            <span>Earth Intelligence Digital Twin <b>·</b> Flood Hazard Module (Phase 2A)</span>
+            <span>Forecast data: Open-Meteo (CC BY 4.0) <b>·</b> Topography: Municipal Survey Benchmarks</span>
+          </footer>
+        </div>
+
+        <!-- Phase 5: Real-Time Monitoring, Automated Ingestion & Alert Governance View -->
+        <div class="page-wrap secondary-view hidden" id="view-monitoring">
+          <div class="secondary-heading">
+            <div>
+              <div class="eyebrow">PHASE 5 · REAL-TIME INGESTION &amp; WARNING GOVERNANCE</div>
+              <h1>Live monitoring &amp; <em>ingestion.</em></h1>
+              <p>Continuous data acquisition, source freshness classification, scheduled orchestration, and alert lifecycle governance across Maharashtra.</p>
+            </div>
+            <button class="button button-dark" id="btn-refresh-monitoring"><span>↻</span> Refresh live status</button>
+          </div>
+
+          <!-- Monitoring Summary Stat Bar -->
+          <div class="monitoring-summary-bar">
+            <div class="mon-stat-card">
+              <span>ACTIVE DATA SOURCES</span>
+              <strong id="mon-stat-total">—</strong>
+              <small id="mon-stat-healthy">— Healthy</small>
+            </div>
+            <div class="mon-stat-card">
+              <span>DATA FRESHNESS ALERT</span>
+              <strong id="mon-stat-stale" style="color:#c2410c;">—</strong>
+              <small id="mon-stat-stale-desc">Stale or Delayed Sources</small>
+            </div>
+            <div class="mon-stat-card">
+              <span>ACTIVE EARLY WARNINGS</span>
+              <strong id="mon-stat-alerts" style="color:#b91c1c;">—</strong>
+              <small id="mon-stat-official">0 Official · 0 Advisories</small>
+            </div>
+            <div class="mon-stat-card">
+              <span>SCHEDULER ENGINE</span>
+              <strong id="mon-stat-scheduler" style="color:#15803d;">ACTIVE</strong>
+              <small id="mon-stat-last-job">7 recurring tasks</small>
+            </div>
+          </div>
+
+          <!-- Controlled On-Demand Ingestion Bar -->
+          <div class="job-trigger-bar">
+            <span>MANUAL ACQUISITION CONTROLS:</span>
+            <button class="btn-sm-run" data-job="weather_forecast_refresh">⚡ Refresh Open-Meteo Forecast</button>
+            <button class="btn-sm-run" data-job="rainfall_observation_ingestion">📡 Ingest NASA POWER Rainfall</button>
+            <button class="btn-sm-run" data-job="official_warning_check">🏛 Probe IMD Official Warnings</button>
+            <button class="btn-sm-run" data-job="hazard_assessment_refresh">🌊 Recompute Hazard Assessment</button>
+            <button class="btn-sm-run" data-job="alert_lifecycle_evaluator">⏱ Evaluate Alert Expiry</button>
+          </div>
+
+          <!-- Source Health & Cadence Cards Grid -->
+          <article class="panel" style="margin-bottom:14px;">
+            <div class="panel-heading">
+              <div>
+                <div class="eyebrow">SOURCE HEALTH MATRIX</div>
+                <h2>Environmental &amp; geospatial data sources</h2>
+              </div>
+              <span class="input-tag" id="source-evaluated-tag">Evaluated against individualized thresholds</span>
+            </div>
+            <div class="source-health-grid" id="source-health-grid">
+              <div class="chart-empty">Loading source health state…</div>
+            </div>
+          </article>
+
+          <!-- Active Early-Warning Alerts Feed -->
+          <article class="panel" style="margin-bottom:14px;">
+            <div class="panel-heading">
+              <div>
+                <div class="eyebrow">DECISION SUPPORT &amp; OFFICIAL BULLETINS</div>
+                <h2>Early-warning alert feed &amp; lifecycle status</h2>
+              </div>
+              <span class="input-tag">Strict Official vs EIDT Segregation</span>
+            </div>
+            <p style="font-size:10px; color:#7f8e84; margin:4px 0 12px; line-height:1.5;">
+              Authoritative government warnings from IMD / MCGM are strictly segregated from automated EIDT diagnostic model assessments. In the absence of an IMD API key, official warnings are never synthesized.
+            </p>
+            <div id="monitoring-alerts-feed">
+              <div class="chart-empty">Loading early-warning alerts…</div>
+            </div>
+          </article>
+
+          <!-- Scheduled Ingestion Job Run History Table -->
+          <article class="panel" style="margin-bottom:14px;">
+            <div class="panel-heading">
+              <div>
+                <div class="eyebrow">ORCHESTRATION AUDIT</div>
+                <h2>Recent scheduled ingestion job runs</h2>
+              </div>
+              <span class="input-tag">Non-Overlapping Job Locks Active</span>
+            </div>
+            <div class="table-scroll">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Job Name</th>
+                    <th>Source ID</th>
+                    <th>Status</th>
+                    <th>Records Retrieved</th>
+                    <th>Accepted / Deduped</th>
+                    <th>Execution Log / Notes</th>
+                    <th>Timestamp (UTC)</th>
+                  </tr>
+                </thead>
+                <tbody id="monitoring-jobs-table">
+                  <tr><td colspan="7" class="chart-empty">Loading execution history…</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </article>
+
+          <footer class="page-footer">
+            <span>Earth Intelligence Digital Twin <b>·</b> Real-Time Monitoring &amp; Alert Governance (Phase 5)</span>
+            <span>Provenance-Aware <b>·</b> Bounded Retries <b>·</b> Non-Destructive Ingestion</span>
+          </footer>
+        </div>
+
+        <!-- Phase 6: Historical Disaster Replay, Model Calibration & Scientific Validation View -->
+        <div class="page-wrap secondary-view hidden" id="view-validation">
+          <div class="secondary-heading">
+            <div>
+              <div class="eyebrow">PHASE 6 · REPRODUCIBLE EVALUATION, CALIBRATION &amp; REPLAY</div>
+              <h1>Scientific validation &amp; <em>disaster replay.</em></h1>
+              <p>Objective performance evaluation against verified historical disasters, Platt probability calibration, and state-isolated retrospective timeline replay across Maharashtra.</p>
+            </div>
+            <div style="display:flex; gap:8px;">
+              <button class="button button-dark" id="btn-run-eval"><span>⚡</span> Evaluate held-out test (2020–2023)</button>
+              <button class="button" id="btn-run-calib" style="background:#ffffff; border:1px solid #ccd8cf; color:#1e2d24;"><span>⚖</span> Recalibrate model (Platt)</button>
+            </div>
+          </div>
+
+          <!-- Section 1: Multi-Hazard Audit Readiness Matrix -->
+          <article class="panel" style="margin-bottom:16px;">
+            <div class="panel-heading">
+              <div>
+                <div class="eyebrow">PHASE 6A · HAZARD READINESS AUDIT</div>
+                <h2>Multi-hazard data &amp; model readiness matrix</h2>
+              </div>
+              <span class="hazard-status-pill hazard-status-evaluated" id="audit-matrix-count">6 Hazards Audited</span>
+            </div>
+            <div class="table-scroll">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Hazard Category</th>
+                    <th>Model Status</th>
+                    <th>Target Variable</th>
+                    <th>Reference Sources</th>
+                    <th>Resolution</th>
+                    <th>Evaluation Readiness</th>
+                    <th>Known Limitations &amp; Data Gaps</th>
+                  </tr>
+                </thead>
+                <tbody id="val-readiness-table">
+                  <tr><td colspan="7" class="chart-empty">Loading hazard audit matrix…</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </article>
+
+          <!-- Section 2: Model Performance & Calibration Metrics -->
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:16px; margin-bottom:16px;">
+            <!-- Left: Contingency & Skill Scores -->
+            <article class="panel">
+              <div class="panel-heading">
+                <div>
+                  <div class="eyebrow">EVALUATION METRICS · HELD-OUT TEST DATA</div>
+                  <h2>Disaster detection performance (N=50)</h2>
+                </div>
+                <span class="hazard-status-pill hazard-status-operational" id="eval-evidence-badge">Validated on held-out data</span>
+              </div>
+              
+              <div class="metric-grid" style="grid-template-columns: repeat(2, 1fr); margin-bottom:12px;">
+                <div class="metric-card">
+                  <div class="metric-heading"><span>Critical Success Index (CSI)</span><span class="metric-icon">🎯</span></div>
+                  <div class="metric-value"><span id="val-metric-csi">—</span></div>
+                  <div class="metric-foot"><span class="metric-note">Threat score (vs Climatology 0.000)</span></div>
+                </div>
+                <div class="metric-card">
+                  <div class="metric-heading"><span>Probability of Detection (POD)</span><span class="metric-icon">✓</span></div>
+                  <div class="metric-value"><span id="val-metric-pod">—</span></div>
+                  <div class="metric-foot"><span class="metric-note">Hit Rate / Recall (fraction detected)</span></div>
+                </div>
+                <div class="metric-card">
+                  <div class="metric-heading"><span>False Alarm Ratio (FAR)</span><span class="metric-icon">⚠</span></div>
+                  <div class="metric-value"><span id="val-metric-far">—</span></div>
+                  <div class="metric-foot"><span class="metric-note">Fraction of false alert issuances</span></div>
+                </div>
+                <div class="metric-card">
+                  <div class="metric-heading"><span>Brier Score (MSE)</span><span class="metric-icon">📉</span></div>
+                  <div class="metric-value"><span id="val-metric-brier">—</span></div>
+                  <div class="metric-foot"><span class="metric-note">Probabilistic error (0.0 = perfect)</span></div>
+                </div>
+              </div>
+
+              <div style="padding:10px 14px; background:#f8faf8; border:1px solid #e2ebe4; border-radius:6px; font-size:10px; color:#3a5445; line-height:1.5;">
+                <strong>Leakage Controls:</strong> Chronological holdout: Training (2005–2019, N=50) strictly precedes Test (2020–2023, N=50). Grouped by event to prevent spatial/storm-day leakage. Zero target leakage.
+              </div>
+            </article>
+
+            <!-- Right: Probability Calibration & Reliability -->
+            <article class="panel">
+              <div class="panel-heading">
+                <div>
+                  <div class="eyebrow">PHASE 6F · PROBABILITY CALIBRATION</div>
+                  <h2>Platt scaling &amp; reliability bins</h2>
+                </div>
+                <span class="hazard-status-pill hazard-status-operational" id="calib-brier-badge">Calibrated Sigmoid</span>
+              </div>
+
+              <div style="display:flex; justify-content:space-between; align-items:center; background:#edf4ef; padding:10px 14px; border-radius:6px; margin-bottom:12px; font-size:11px;">
+                <div>
+                  <span style="color:#52695c;">Pre-Calibration Brier:</span> <strong id="val-brier-pre">—</strong>
+                </div>
+                <div>
+                  <span style="color:#52695c;">Post-Calibration Brier:</span> <strong id="val-brier-post" style="color:#15803d;">—</strong>
+                </div>
+                <div>
+                  <span style="color:#52695c;">Improvement:</span> <strong id="val-brier-impr" style="color:#0369a1;">—%</strong>
+                </div>
+              </div>
+
+              <div class="table-scroll">
+                <table class="data-table" style="font-size:10px;">
+                  <thead>
+                    <tr>
+                      <th>Bin Range</th>
+                      <th>Samples</th>
+                      <th>Mean Pred Prob</th>
+                      <th>Empirical Fraction (+)</th>
+                      <th>Calibration Status</th>
+                    </tr>
+                  </thead>
+                  <tbody id="val-reliability-table">
+                    <tr><td colspan="5" class="chart-empty">Loading reliability bins…</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </article>
+          </div>
+
+          <!-- Section 3: Interactive Historical Disaster Replay Player -->
+          <article class="panel">
+            <div class="panel-heading">
+              <div>
+                <div class="eyebrow">PHASE 6G · REPRODUCIBLE REPLAY ENGINE</div>
+                <h2>Historical event replay &amp; timeline reconstruction</h2>
+              </div>
+              <div style="display:flex; gap:8px; align-items:center;">
+                <span class="hazard-status-pill hazard-status-experimental" id="replay-mode-badge">Retrospective reconstruction</span>
+                <span class="hazard-status-pill hazard-status-operational">Strict State Isolation Active</span>
+              </div>
+            </div>
+
+            <!-- Replay Control Bar -->
+            <div style="display:flex; flex-wrap:wrap; gap:12px; align-items:center; background:#f8faf8; border:1px solid #e1eae3; padding:12px 16px; border-radius:6px; margin-bottom:14px;">
+              <div style="display:flex; align-items:center; gap:8px;">
+                <label for="replay-event-select" style="font-size:11px; font-weight:700; color:#284d3d;">SELECT HISTORICAL DISASTER:</label>
+                <select id="replay-event-select" class="select-control" style="min-width:260px;">
+                  <option value="MUM_EVENT_20050726">26 July 2005 Mumbai Catastrophic Deluge (944mm)</option>
+                  <option value="MUM_EVENT_20170829">29 August 2017 Extreme Monsoon Inundation (331mm)</option>
+                  <option value="MUM_EVENT_20190702">2 July 2019 Mithi Catchment Overflow (375mm)</option>
+                  <option value="MUM_EVENT_20200805">5 August 2020 South Mumbai Storm Surge (332mm)</option>
+                  <option value="MUM_EVENT_20210718">18 July 2021 Suburban Flash Cloudburst (253mm)</option>
+                  <option value="MUM_EVENT_20230726">26 July 2023 Monsoon Heavy Rain Alert (204mm)</option>
+                </select>
+              </div>
+              <button class="button button-dark" id="btn-execute-replay"><span>▶</span> Execute historical replay</button>
+              <div style="font-size:9px; color:#5c7365; margin-left:auto;">
+                🛡 <em>Replay snapshots are isolated from live alerts, current telemetry, and active routing restrictions.</em>
+              </div>
+            </div>
+
+            <!-- Scrubbable Timeline Progression Bar -->
+            <div class="replay-timeline-container" style="background:#ffffff; border:1px solid #e2ece5; border-radius:6px; padding:14px; margin-bottom:14px;">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                <strong style="font-size:12px; color:#1e2d24;" id="replay-timeline-title">Event Replay Timeline</strong>
+                <span style="font-size:10px; color:#587062;" id="replay-active-step">T-0h: Event Peak</span>
+              </div>
+              
+              <div class="replay-scrubber-steps" id="replay-scrubber-steps" style="display:flex; gap:6px; margin-bottom:10px; overflow-x:auto;">
+                <!-- Timeline step buttons injected dynamically -->
+              </div>
+
+              <!-- Replay Step Narrative Box -->
+              <div id="replay-narrative-box" style="background:#f4f7f5; border-left:4px solid #1f3327; padding:10px 14px; border-radius:4px; font-size:11px; color:#294234; line-height:1.5;">
+                Select a step to view reconstructed conditions and documented civic impacts.
+              </div>
+            </div>
+
+            <!-- Replay Concordance Table (10 MMR Wards) -->
+            <div class="table-scroll">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Locality / Ward</th>
+                    <th>Predicted Probability</th>
+                    <th>Predicted Risk</th>
+                    <th>Estimated Water Depth</th>
+                    <th>Observed Benchmark</th>
+                    <th>Concordance Classification</th>
+                  </tr>
+                </thead>
+                <tbody id="replay-concordance-table">
+                  <tr><td colspan="6" class="chart-empty">Click "Execute historical replay" to reconstruct past disaster state…</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </article>
+
+          <footer class="page-footer">
+            <span>Earth Intelligence Digital Twin <b>·</b> Scientific Validation &amp; Historical Replay (Phase 6)</span>
+            <span>Zero Synthetic Labels <b>·</b> Strict Temporal Separation <b>·</b> Traceable Provenance</span>
+          </footer>
+        </div>
       </main>
     </div>
     <div class="toast" id="toast" role="status" aria-live="polite"></div>

@@ -47,15 +47,32 @@ DATA_SOURCE_REGISTRY: Dict[str, Dict[str, Any]] = {
         "license": "NASA Open Data Policy (Unrestricted Public Use)",
         "product_type": "GPM_3IMERGDF (Daily Calibrated Precipitation Accumulation)",
         "spatial_resolution": "0.1° x 0.1° (~10 km)",
-        "temporal_revisit": "Half-hourly / Daily aggregated",
+        "temporal_revisit": "Half-hourly / Daily aggregated satellite observation",
         "coverage": "Global (Gridded latitude 18.89-19.29, longitude 72.78-72.99)",
         "auth_required": True,
         "auth_type": "NASA Earthdata Login (HTTP Basic / Bearer)",
         "credentials_needed": ["EARTHDATA_USERNAME", "EARTHDATA_PASSWORD"],
         "registration_url": "https://urs.earthdata.nasa.gov/",
         "documentation_url": "https://gpm.nasa.gov/data/imerg",
-        "status": "OPERATIONAL_VIA_NASA_POWER_CMR",
-        "primary_use": "Multi-satellite blended extreme precipitation time-series and antecedent rainfall"
+        "status": "UNCONFIGURED_REQUIRES_EARTHDATA_LOGIN",
+        "primary_use": "Satellite microwave-infrared precipitation estimates; retrospective observation, not forecast"
+    },
+    "nasa_power": {
+        "id": "nasa_power",
+        "name": "NASA POWER Surface Meteorology & Solar Energy",
+        "provider": "NASA Langley Research Center",
+        "license": "NASA Open Data Policy (Unrestricted Public Use)",
+        "product_type": "Point Daily Retrospective Surface Meteorology & Reanalysis (PRECTOTCORR, T2M, RH2M)",
+        "spatial_resolution": "0.5° x 0.5° Point Grid",
+        "temporal_revisit": "Daily retrospective estimates (latency: 2-3 days)",
+        "coverage": "Point [19.076N, 72.877E] MMR",
+        "auth_required": False,
+        "auth_type": "Open REST API",
+        "credentials_needed": [],
+        "registration_url": "https://power.larc.nasa.gov/",
+        "documentation_url": "https://power.larc.nasa.gov/docs/",
+        "status": "OPERATIONAL_RETROSPECTIVE_POINT",
+        "primary_use": "Retrospective surface rainfall reanalysis; distinct from gridded GPM satellite imagery"
     },
     "copernicus_dem": {
         "id": "copernicus_dem",
@@ -127,20 +144,20 @@ DATA_SOURCE_REGISTRY: Dict[str, Dict[str, Any]] = {
     },
     "imd_aws": {
         "id": "imd_aws",
-        "name": "India Meteorological Department Automated Weather Station Network",
-        "provider": "Ministry of Earth Sciences, Government of India",
+        "name": "India Meteorological Department (IMD) Official Warnings & AWS Observations",
+        "provider": "Ministry of Earth Sciences, Government of India (MoES / IMD)",
         "license": "National Data Sharing and Accessibility Policy (NDSAP) - Open Government Data",
-        "product_type": "Hourly & 24-Hour Precipitation Gauges (Santacruz Station 43003, Colaba Station 43057)",
-        "spatial_resolution": "Point Observation (Representative of 15-20 km radius)",
-        "temporal_revisit": "Hourly updates during Indian Southwest Monsoon (June-October)",
-        "coverage": "Mumbai City & Mumbai Suburban AWS stations",
+        "product_type": "Official District Warnings, Nowcasts & Automatic Weather Station Gauges",
+        "spatial_resolution": "District-level warnings & point ground station observations (~15-20 km radius)",
+        "temporal_revisit": "Sub-daily bulletins (03:00, 08:30, 11:30, 17:30 IST) & hourly AWS feeds",
+        "coverage": "Mumbai City, Mumbai Suburban & Maharashtra Districts",
         "auth_required": True,
-        "auth_type": "IMD Open API Token (or Web Scraping / RSS Feed from Mausam portal)",
+        "auth_type": "Official IMD API Key (Authorization Bearer Token)",
         "credentials_needed": ["IMD_API_KEY (Official MoES registered credentials)"],
-        "registration_url": "https://mausam.imd.gov.in/",
-        "documentation_url": "https://mausam.imd.gov.in/mumbai/",
-        "status": "CONFIGURED_WITH_IMD_BENCHMARKS",
-        "primary_use": "Ground-truth rainfall calibration and real-time monsoon rainfall alerting"
+        "registration_url": "https://api.imd.gov.in/",
+        "documentation_url": "https://api.imd.gov.in/public/api_reference.html",
+        "status": "UNCONFIGURED_REQUIRES_IMD_KEY",
+        "primary_use": "Authoritative government flood/cyclone/weather bulletins and ground-truth AWS observations. Never fabricated when unconfigured."
     },
     "google_maps_platform": {
         "id": "google_maps_platform",
@@ -158,6 +175,23 @@ DATA_SOURCE_REGISTRY: Dict[str, Dict[str, Any]] = {
         "documentation_url": "https://developers.google.com/maps/documentation/javascript",
         "status": "CONFIGURED_WITH_GOOGLE_MAPS",
         "primary_use": "High-fidelity urban cartography, satellite overlays, and topographic terrain basemaps"
+    },
+    "open_meteo_forecast": {
+        "id": "open_meteo_forecast",
+        "name": "Open-Meteo Numerical Weather Prediction (NWP) Forecast API",
+        "provider": "Open-Meteo (Synthesizing ECMWF IFS, GFS, ICON, Météo-France)",
+        "license": "Creative Commons CC BY 4.0",
+        "product_type": "Hourly precipitation, rain accumulation, weather codes, probability",
+        "spatial_resolution": "0.1° (~11 km)",
+        "temporal_revisit": "Hourly model initialization runs with 24-48h forecast horizon",
+        "coverage": "Mumbai Metropolitan Region [19.076N, 72.877E] / Expanding to Maharashtra",
+        "auth_required": False,
+        "auth_type": "Open Public Scientific API (Non-commercial / Rate-limited)",
+        "credentials_needed": [],
+        "registration_url": "https://open-meteo.com/",
+        "documentation_url": "https://open-meteo.com/en/docs",
+        "status": "OPERATIONAL_HOURLY_FORECAST",
+        "primary_use": "Numerical rainfall and meteorological forecast guidance for EIDT decision support. Distinct from official government warnings."
     }
 }
 

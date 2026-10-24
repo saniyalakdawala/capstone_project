@@ -40,11 +40,16 @@ CREATE TABLE study_areas (
     population INTEGER,
     elevation_mean_m NUMERIC(6, 2),
     source VARCHAR(255) NOT NULL,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    parent_region_id VARCHAR(64) REFERENCES study_areas(study_area_id) ON DELETE SET NULL,
+    region_type VARCHAR(64) DEFAULT 'Ward',
+    hierarchy_path VARCHAR(255)
 );
 
 CREATE INDEX idx_study_areas_name ON study_areas (name);
 CREATE INDEX idx_study_areas_geom ON study_areas USING gin (geometry);
+CREATE INDEX idx_study_areas_parent ON study_areas (parent_region_id);
+CREATE INDEX idx_study_areas_region_type ON study_areas (region_type);
 
 -- -------------------------------------------------------------------------
 -- 2. WeatherObservation: In-situ, AWS, and Forecast Rainfall
@@ -111,12 +116,15 @@ CREATE TABLE infrastructure (
     latitude NUMERIC(10, 6),
     longitude NUMERIC(10, 6),
     ward_id VARCHAR(64) REFERENCES study_areas(study_area_id),
+    locality_name VARCHAR(128),
+    sub_ward VARCHAR(64),
     properties JSONB,                        -- capacity, bed count, emergency status
     source VARCHAR(128) NOT NULL DEFAULT 'OpenStreetMap / BMC Public GIS'
 );
 
 CREATE INDEX idx_infra_type ON infrastructure (feature_type);
 CREATE INDEX idx_infra_ward ON infrastructure (ward_id);
+CREATE INDEX idx_infra_locality ON infrastructure (locality_name);
 CREATE INDEX idx_infra_geom ON infrastructure USING gin (geometry);
 
 -- -------------------------------------------------------------------------
@@ -129,12 +137,15 @@ CREATE TABLE road_segments (
     geometry JSONB NOT NULL,                 -- GeoJSON LineString
     length_meters NUMERIC(10, 2),
     speed_kmh NUMERIC(5, 1),
+    locality_name VARCHAR(128),
+    elevation_m NUMERIC(6, 2),
     connectivity_attributes JSONB,          -- u, v nodes, one_way, bridge, subway
     vulnerability_index NUMERIC(3, 2),       -- 0.0 to 1.0 based on historical flooding
     source VARCHAR(128) NOT NULL DEFAULT 'OpenStreetMap'
 );
 
 CREATE INDEX idx_roads_class ON road_segments (road_class);
+CREATE INDEX idx_roads_locality ON road_segments (locality_name);
 CREATE INDEX idx_roads_geom ON road_segments USING gin (geometry);
 
 -- -------------------------------------------------------------------------
@@ -203,6 +214,148 @@ CREATE TABLE simulation_results (
 
 CREATE INDEX idx_sim_results_scenario ON simulation_results (scenario_id);
 CREATE INDEX idx_sim_results_type ON simulation_results (result_type);
+
+-- -------------------------------------------------------------------------
+-- 11. Buildings: High-Resolution Building Footprints & Critical Assets
+-- -------------------------------------------------------------------------
+CREATE TABLE buildings (
+    building_id VARCHAR(64) PRIMARY KEY,
+    name VARCHAR(255),
+    building_type VARCHAR(64) NOT NULL DEFAULT 'residential',
+    study_area_id VARCHAR(64) REFERENCES study_areas(study_area_id) ON DELETE SET NULL,
+    locality_name VARCHAR(128),
+    geometry JSONB NOT NULL,
+    centroid JSONB,
+    height_m NUMERIC(6, 2),
+    levels INTEGER,
+    ground_elevation_m NUMERIC(6, 2),
+    vulnerability_index NUMERIC(3, 2) DEFAULT 0.0,
+    properties JSONB,
+    source VARCHAR(128) DEFAULT 'OpenStreetMap',
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX idx_buildings_study_area ON buildings (study_area_id);
+CREATE INDEX idx_buildings_type ON buildings (building_type);
+CREATE INDEX idx_buildings_locality ON buildings (locality_name);
+CREATE INDEX idx_buildings_geom ON buildings USING gin (geometry);
+
+-- -------------------------------------------------------------------------
+-- 12. LocalityAlert: Early Warning Advisory Records by Micro-Locality
+-- -------------------------------------------------------------------------
+CREATE TABLE locality_alerts (
+    alert_id VARCHAR(64) PRIMARY KEY,
+    locality_name VARCHAR(128) NOT NULL,
+    study_area_id VARCHAR(64) REFERENCES study_areas(study_area_id) ON DELETE SET NULL,
+    severity_level VARCHAR(32) NOT NULL,
+    headline VARCHAR(255) NOT NULL,
+    description TEXT NOT NULL,
+    expected_water_depth_m NUMERIC(5, 2),
+    onset_timestamp TIMESTAMP WITH TIME ZONE,
+    expiry_timestamp TIMESTAMP WITH TIME ZONE,
+    recommended_action TEXT,
+    source VARCHAR(128) DEFAULT 'EIDT Flood Early Warning Engine',
+    is_active BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX idx_alerts_locality ON locality_alerts (locality_name);
+CREATE INDEX idx_alerts_study_area ON locality_alerts (study_area_id);
+CREATE INDEX idx_alerts_severity ON locality_alerts (severity_level);
+CREATE INDEX idx_alerts_active ON locality_alerts (is_active);
+
+-- -------------------------------------------------------------------------
+-- 13. DataProvenanceLog: Ingestion Run Audit Trails & Verification Hashes
+-- -------------------------------------------------------------------------
+CREATE TABLE data_provenance_logs (
+    log_id VARCHAR(64) PRIMARY KEY,
+    source_id VARCHAR(64) NOT NULL,
+    connector_name VARCHAR(128) NOT NULL,
+    retrieval_timestamp TIMESTAMP WITH TIME ZONE NOT NULL,
+    status VARCHAR(64) NOT NULL,
+    records_ingested INTEGER DEFAULT 0,
+    spatial_extent JSONB,
+    checksum VARCHAR(128),
+    details TEXT,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX idx_prov_source ON data_provenance_logs (source_id);
+CREATE INDEX idx_prov_timestamp ON data_provenance_logs (retrieval_timestamp DESC);
+CREATE INDEX idx_prov_status ON data_provenance_logs (status);
+
+-- -------------------------------------------------------------------------
+-- 14. SchemaMigrations: Applied Database Migration Ledger
+-- -------------------------------------------------------------------------
+CREATE TABLE schema_migrations (
+    version VARCHAR(64) PRIMARY KEY,
+    applied_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    description TEXT
+);
+
+INSERT INTO schema_migrations (version, description)
+VALUES ('001_regional_mmr_foundation', 'Initial base schema with regional MMR foundation')
+ON CONFLICT (version) DO NOTHING;
+
+-- -------------------------------------------------------------------------
+-- 15. WeatherForecast: Traceable Hourly Numerical Weather Predictions
+-- -------------------------------------------------------------------------
+CREATE TABLE weather_forecasts (
+    forecast_id VARCHAR(64) PRIMARY KEY,
+    study_area_id VARCHAR(64) REFERENCES study_areas(study_area_id) ON DELETE CASCADE,
+    locality_id VARCHAR(64),
+    issue_time TIMESTAMP WITH TIME ZONE NOT NULL,
+    valid_time TIMESTAMP WITH TIME ZONE NOT NULL,
+    retrieval_time TIMESTAMP WITH TIME ZONE NOT NULL,
+    latitude NUMERIC(9, 6),
+    longitude NUMERIC(9, 6),
+    precipitation_mm NUMERIC(6, 2) NOT NULL DEFAULT 0.0,
+    rain_mm NUMERIC(6, 2),
+    weather_code INTEGER,
+    precipitation_probability_pct NUMERIC(5, 2),
+    source VARCHAR(128) NOT NULL DEFAULT 'Open-Meteo',
+    model_name VARCHAR(64) DEFAULT 'best_match',
+    units JSONB,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX idx_forecasts_valid_time ON weather_forecasts (valid_time);
+CREATE INDEX idx_forecasts_issue_time ON weather_forecasts (issue_time DESC);
+CREATE INDEX idx_forecasts_study_area ON weather_forecasts (study_area_id);
+CREATE INDEX idx_forecasts_source ON weather_forecasts (source);
+
+-- -------------------------------------------------------------------------
+-- 16. FloodHazardAssessment: Versioned Transparent Locality Risk Scores
+-- -------------------------------------------------------------------------
+CREATE TABLE flood_hazard_assessments (
+    assessment_id VARCHAR(64) PRIMARY KEY,
+    study_area_id VARCHAR(64) REFERENCES study_areas(study_area_id) ON DELETE CASCADE,
+    locality_name VARCHAR(128) NOT NULL,
+    assessment_time TIMESTAMP WITH TIME ZONE NOT NULL,
+    valid_start_time TIMESTAMP WITH TIME ZONE NOT NULL,
+    valid_end_time TIMESTAMP WITH TIME ZONE NOT NULL,
+    horizon_hours INTEGER DEFAULT 24,
+    forecast_rainfall_24h_mm NUMERIC(6, 2) NOT NULL DEFAULT 0.0,
+    forecast_rainfall_peak_1h_mm NUMERIC(6, 2) DEFAULT 0.0,
+    antecedent_rainfall_24h_mm NUMERIC(6, 2) DEFAULT 0.0,
+    elevation_mean_m NUMERIC(6, 2),
+    risk_level VARCHAR(32) NOT NULL DEFAULT 'LOW',
+    risk_score NUMERIC(4, 2) DEFAULT 0.0,
+    contributing_factors JSONB,
+    missing_inputs JSONB,
+    input_coverage JSONB,
+    confidence_status VARCHAR(64) NOT NULL DEFAULT 'MODERATE',
+    model_version VARCHAR(64) NOT NULL DEFAULT 'EIDT-Hazard-v1.0',
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX idx_hazard_study_area ON flood_hazard_assessments (study_area_id);
+CREATE INDEX idx_hazard_risk_level ON flood_hazard_assessments (risk_level);
+CREATE INDEX idx_hazard_time ON flood_hazard_assessments (assessment_time DESC);
+
+INSERT INTO schema_migrations (version, description)
+VALUES ('002_flood_hazard_module', 'Traceable hourly forecasts and locality flood-hazard assessments')
+ON CONFLICT (version) DO NOTHING;
 
 -- =========================================================================
 -- BENCHMARK & DEMONSTRATION GIS-AWARE SQL QUERIES (Section 14 Deliverable)

@@ -2,8 +2,8 @@ from fastapi import APIRouter, Depends, Query
 from sqlalchemy.orm import Session
 from typing import List, Optional
 from app.database import get_db
-from app.models.schema import Infrastructure, RoadSegment, EnvironmentalFeature
-from app.schemas.api_schemas import InfrastructureResponse, RoadSegmentResponse
+from app.models.schema import Infrastructure, RoadSegment, EnvironmentalFeature, Building, LocalityAlert
+from app.schemas.api_schemas import InfrastructureResponse, RoadSegmentResponse, BuildingResponse, LocalityAlertResponse
 
 router = APIRouter(prefix="/infrastructure", tags=["Infrastructure & Roads"])
 
@@ -244,3 +244,84 @@ def get_osm_data_source_status(db: Session = Depends(get_db)):
             base_status["errors"] = f"Provenance file read warning: {str(e)}"
 
     return base_status
+
+
+@router.get("/buildings", response_model=List[BuildingResponse])
+def get_buildings(
+    study_area_id: Optional[str] = Query(None, description="Filter by study area ID"),
+    locality_name: Optional[str] = Query(None, description="Filter by locality name"),
+    building_type: Optional[str] = Query(None, description="Filter by building type"),
+    limit: Optional[int] = Query(500, description="Max buildings to return"),
+    db: Session = Depends(get_db)
+):
+    """
+    Returns regional building footprints and vulnerability metrics.
+    """
+    query = db.query(Building)
+    if study_area_id:
+        query = query.filter(Building.study_area_id == study_area_id)
+    if locality_name:
+        query = query.filter(Building.locality_name == locality_name)
+    if building_type:
+        query = query.filter(Building.building_type == building_type)
+    return query.limit(limit).all()
+
+
+@router.get("/buildings/geojson")
+def get_buildings_geojson(
+    study_area_id: Optional[str] = Query(None),
+    limit: Optional[int] = Query(500),
+    db: Session = Depends(get_db)
+):
+    """
+    Returns building footprints as GeoJSON FeatureCollection.
+    """
+    query = db.query(Building)
+    if study_area_id:
+        query = query.filter(Building.study_area_id == study_area_id)
+    buildings = query.limit(limit).all()
+
+    features = []
+    for b in buildings:
+        props = {
+            "building_id": b.building_id,
+            "name": b.name,
+            "building_type": b.building_type,
+            "study_area_id": b.study_area_id,
+            "locality_name": b.locality_name,
+            "height_m": float(b.height_m or 0.0),
+            "levels": b.levels,
+            "ground_elevation_m": float(b.ground_elevation_m or 0.0),
+            "vulnerability_index": float(b.vulnerability_index or 0.0),
+            "source": b.source
+        }
+        if b.properties:
+            props.update(b.properties)
+        features.append({
+            "type": "Feature",
+            "properties": props,
+            "geometry": b.geometry
+        })
+
+    return {
+        "type": "FeatureCollection",
+        "features": features
+    }
+
+
+@router.get("/alerts", response_model=List[LocalityAlertResponse])
+def get_locality_alerts(
+    study_area_id: Optional[str] = Query(None, description="Filter by study area ID"),
+    is_active: Optional[bool] = Query(True, description="Filter active alerts"),
+    db: Session = Depends(get_db)
+):
+    """
+    Returns locality-level flood early warning advisories.
+    """
+    query = db.query(LocalityAlert)
+    if study_area_id:
+        query = query.filter(LocalityAlert.study_area_id == study_area_id)
+    if is_active is not None:
+        query = query.filter(LocalityAlert.is_active == is_active)
+    return query.order_by(LocalityAlert.created_at.desc()).all()
+

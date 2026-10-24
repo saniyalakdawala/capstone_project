@@ -1,0 +1,202 @@
+{
+  "issue_time": "2026-10-21T10:17:56.323810+00:00",
+  "retrieval_time": "2026-10-21T10:17:56.323810+00:00",
+  "valid_start_time": "2026-10-21T10:00:00+00:00",
+  "valid_end_time": "2026-10-22T09:00:00+00:00",
+  "horizon_hours": 24,
+  "source": "Open-Meteo",
+  "provider": "Open-Meteo (Synthesizing ECMWF IFS, GFS, ICON)",
+  "model_name": "best_match",
+  "attribution": "Weather data by Open-Meteo.com under CC BY 4.0",
+  "coordinates": {
+    "latitude": 19.076,
+    "longitude": 72.8777
+  },
+  "units": {
+    "time": "iso8601",
+    "precipitation": "mm",
+    "rain": "mm",
+    "weather_code": "wmo code",
+    "precipitation_probability": "%"
+  },
+  "hourly_forecast": [
+    {
+      "valid_time": "2026-10-21T10:00:00+00:00",
+      "precipitation_mm": 0.1,
+      "rain_mm": 0.1,
+      "weather_code": 51,
+      "precipitation_probability_pct": 6.0
+    },
+    {
+      "valid_time": "2026-10-21T11:00:00+00:00",
+      "precipitation_mm": 0.0,
+      "rain_mm": 0.0,
+      "weather_code": 0,
+      "precipitation_probability_pct": 14.0
+    },
+    {
+      "valid_time": "2026-10-21T12:00:00+00:00",
+      "precipitation_mm": 0.0,
+      "rain_mm": 0.0,
+      "weather_code": 0,
+      "precipitation_probability_pct": 18.0
+    },
+    {
+      "valid_time": "2026-10-21T13:00:00+00:00",
+      "precipitation_mm": 0.0,
+      "rain_mm": 0.0,
+      "weather_code": 0,
+      "precipitation_probability_pct": 14.0
+    },
+    {
+      "valid_time": "2026-10-21T14:00:00+00:00",
+      "precipitation_mm": 0.0,
+      "rain_mm": 0.0,
+      "weather_code": 0,
+      "precipitation_probability_pct": 6.0
+    },
+    {
+      "valid_time": "2026-10-21T15:00:00+00:00",
+      "precipitation_mm": 0.0,
+      "rain_mm": 0.0,
+      "weather_code": 0,
+      "precipitation_probability_pct": 0.0
+    },
+    {
+      "valid_time": "2026-10-21T16:00:00+00:00",
+      "precipitation_mm": 0.0,
+      "rain_mm": 0.0,
+      "weather_code": 0,
+      "precipitation_probability_pct": 0.0
+    },
+    {
+      "valid_time": "2026-10-21T17:00:00+00:00",
+      "precipitation_mm": 0.0,
+      "rain_mm": 0.0,
+      "weather_code": 0,
+      "precipitation_probability_pct": 0.0
+    },
+    {
+      "valid_time": "2026-10-21T18:00:00+00:00",
+      "precipitation_mm": 0.0,
+      "rain_mm": 0.0,
+      "weather_code": 0,
+      "precipitation_probability_pct": 0.0
+    },
+    {
+      "valid_time": "2026-10-21T19:00:00+00:00",
+      "precipitation_mm": 0.0,
+      "rain_mm": 0.0,
+      "weather_code": 0,
+      "precipitation_probability_pct": 0.0
+    },
+    {
+      "valid_time": "2026-10-21T20:00:00+00:00",
+      "precipitation_mm": 0.0,
+      "rain_mm": 0.0,
+      "weather_code": 0,
+      "precipitation_probability_pct": 0.0
+    },
+    {
+      "valid_time": "2026-10-21T21:00:00+00:00",
+      "precipitation_mm": 0.0,
+      "rain_mm": 0.0,
+      "weather_code": 0,
+      "precipitation_probability_pct": 0.0
+    },
+    {
+      "valid_time": "2026-10-21T22:00:00+00:00",
+      "precipitation_mm": 0.0,
+      "rain_mm": 0.0,
+      "weather_code": 3,
+      "precipitation_probability_pct": 0.0
+    },
+    {
+      "valid_time": "2026-10-21T23:00:00+00:00",
+      "precipitation_mm": 0.0,
+      "rain_mm": 0.0,
+      "weather_code": 2,
+      "precipitation_probability_pct": 0.0
+    },
+    {
+      "valid_time": "2026-10-22T00:00:00+00:00",
+      "precipitation_mm": 0.0,
+      "rain_mm": 0.0,
+      "weather_code": 2,
+      "precipitation_probability_pct": 0.0
+    },
+    {
+      "valid_time": "2026-10-22T01:00:00+00:00",
+      "precipitation_mm": 0.0,
+      "rain_mm": 0.0,
+      "weather_code": 1,
+      "precipitation_probability_pct": 0.0
+    },
+    {
+      "valid_time": "2026-10-22T02:00:00+00:00",
+      "precipitation_mm": 0.0,
+      "rain_mm": 0.0,
+      "weather_code": 0,
+      "precipitation_probability_pct": 0.0
+    },
+    {
+      "valid_time": "2026-10-22T03:00:00+00:00",
+      "precipitation_mm": 0.0,
+      "rain_mm": 0.0,
+      "weather_code": 0,
+      "precipitation_probability_pct": 0.0
+    },
+    {
+      "valid_time": "2026-10-22T04:00:00+00:00",
+      "precipitation_mm": 0.0,
+      "rain_mm": 0.0,
+      "weather_code": 0,
+      "precipitation_probability_pct": 0.0
+    },
+    {
+      "valid_time": "2026-10-22T05:00:00+00:00",
+      "precipitation_mm": 0.0,
+      "rain_mm": 0.0,
+      "weather_code": 0,
+      "precipitation_probability_pct": 0.0
+    },
+    {
+      "valid_time": "2026-10-22T06:00:00+00:00",
+      "precipitation_mm": 0.0,
+      "rain_mm": 0.0,
+      "weather_code": 1,
+      "precipitation_probability_pct": 0.0
+    },
+    {
+      "valid_time": "2026-10-22T07:00:00+00:00",
+      "precipitation_mm": 0.0,
+      "rain_mm": 0.0,
+      "weather_code": 1,
+      "precipitation_probability_pct": 0.0
+    },
+    {
+      "valid_time": "2026-10-22T08:00:00+00:00",
+      "precipitation_mm": 0.0,
+      "rain_mm": 0.0,
+      "weather_code": 1,
+      "precipitation_probability_pct": 0.0
+    },
+    {
+      "valid_time": "2026-10-22T09:00:00+00:00",
+      "precipitation_mm": 0.0,
+      "rain_mm": 0.0,
+      "weather_code": 1,
+      "precipitation_probability_pct": 0.0
+    }
+  ],
+  "summary_metrics": {
+    "accumulation_1h_max_mm": 0.1,
+    "accumulation_3h_max_mm": 0.1,
+    "accumulation_6h_max_mm": 0.1,
+    "accumulation_12h_max_mm": 0.1,
+    "accumulation_24h_total_mm": 0.1,
+    "peak_intensity_timestamp": "2026-10-21T10:00:00+00:00",
+    "heavy_rain_hours_count": 0
+  },
+  "is_demo_fallback": false
+}

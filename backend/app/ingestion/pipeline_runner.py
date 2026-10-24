@@ -15,6 +15,7 @@ from app.ingestion.worldpop_connector import WorldPopConnector
 from app.ingestion.flood_history_connector import HistoricalFloodConnector
 from app.ingestion.imd_connector import ImdConnector
 from app.ingestion.google_maps_connector import GoogleMapsConnector
+from app.ingestion.open_meteo_connector import OpenMeteoForecastConnector
 
 logger = logging.getLogger(__name__)
 
@@ -23,6 +24,7 @@ class PipelineRunner:
         gmaps = GoogleMapsConnector()
         self.connectors = {
             "openstreetmap": OpenStreetMapConnector(),
+            "open_meteo_forecast": OpenMeteoForecastConnector(),
             "nasa_gpm_imerg": NasaGpmConnector(),
             "copernicus_sentinel1": CopernicusConnector(),
             "copernicus_dem": ElevationConnector(),

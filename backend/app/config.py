@@ -32,4 +32,13 @@ class Settings(BaseSettings):
     DEFAULT_CRS: str = "EPSG:4326"
     PROJECTED_CRS: str = "EPSG:32643"  # UTM Zone 43N for Mumbai metric calculations
 
+    # Production Deployment Settings
+    ENVIRONMENT: str = os.getenv("ENVIRONMENT", "development")
+    CORS_ORIGINS: str = os.getenv("CORS_ORIGINS", "*")
+
+    # Optional CDSE Connector Settings (Disabled by default)
+    ENABLE_CDSE_INTEGRATION: bool = os.getenv("ENABLE_CDSE_INTEGRATION", "false").lower() in ("true", "1", "yes")
+    CDSE_CLIENT_ID: str = os.getenv("CDSE_CLIENT_ID", "")
+    CDSE_CLIENT_SECRET: str = os.getenv("CDSE_CLIENT_SECRET", "")
+
 settings = Settings()

@@ -1,0 +1,118 @@
+# =========================================================================
+# docker-compose.yml — Earth Intelligence Digital Twin (EIDT) Maharashtra
+# Production & Staging Orchestration Stack
+# =========================================================================
+
+version: "3.8"
+
+services:
+  # 1. PostgreSQL 16 + PostGIS 3.4 Spatial Database
+  db:
+    image: postgis/postgis:16-3.4-alpine
+    container_name: eidt_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_DB: ${POSTGRES_DB:-eidt_mumbai}
+      PGDATA: /var/lib/postgresql/data/pgdata
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./backend/database/schema.sql:/docker-entrypoint-initdb.d/01_schema.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-eidt_mumbai}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    networks:
+      - eidt_network
+
+  # 2. FastAPI Geospatial Backend
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    container_name: eidt_backend
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_HOST: db
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: ${POSTGRES_DB:-eidt_mumbai}
+      DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@db:5432/${POSTGRES_DB:-eidt_mumbai}
+      ENVIRONMENT: ${ENVIRONMENT:-production}
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost,http://localhost:80,http://localhost:3000}
+    ports:
+      - "8000:8000"
+    volumes:
+      - eidt_data:/app/backend/data
+      - ./backend/database:/app/backend/database
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/health/live"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+    networks:
+      - eidt_network
+
+  # 3. Scheduled Ingestion & Automated Alert Worker
+  scheduler:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    container_name: eidt_scheduler
+    restart: unless-stopped
+    depends_on:
+      backend:
+        condition: service_healthy
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_HOST: db
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: ${POSTGRES_DB:-eidt_mumbai}
+      DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@db:5432/${POSTGRES_DB:-eidt_mumbai}
+      ENVIRONMENT: ${ENVIRONMENT:-production}
+    command: ["python", "-m", "app.services.scheduler_service"]
+    volumes:
+      - eidt_data:/app/backend/data
+    networks:
+      - eidt_network
+
+  # 4. Built React Leaflet Frontend (Nginx Reverse Proxy)
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    container_name: eidt_frontend
+    restart: unless-stopped
+    depends_on:
+      backend:
+        condition: service_healthy
+    ports:
+      - "80:80"
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost/healthz"]
+      interval: 20s
+      timeout: 5s
+      retries: 3
+    networks:
+      - eidt_network
+
+volumes:
+  postgres_data:
+    driver: local
+  eidt_data:
+    driver: local
+
+networks:
+  eidt_network:
+    driver: bridge

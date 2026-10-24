@@ -1,5 +1,9 @@
-from fastapi import APIRouter, Query, BackgroundTasks
-from typing import Optional, Dict, Any
+from fastapi import APIRouter, Query, BackgroundTasks, Depends
+from typing import Optional, Dict, Any, List
+from sqlalchemy.orm import Session
+from app.database import get_db
+from app.models.schema import DataProvenanceLog
+from app.schemas.api_schemas import DataProvenanceLogResponse
 from app.ingestion.pipeline_runner import pipeline_runner
 from app.ingestion.registry import get_registry_summary
 
@@ -45,3 +49,19 @@ def trigger_ingestion(
             "message": "Full automated data acquisition pipeline completed successfully.",
             "results": results
         }
+
+
+@router.get("/provenance", response_model=List[DataProvenanceLogResponse])
+def get_provenance_logs(
+    source_id: Optional[str] = Query(None, description="Filter by source ID"),
+    limit: Optional[int] = Query(100, description="Max logs to return"),
+    db: Session = Depends(get_db)
+):
+    """
+    Returns automated data pipeline provenance audit logs.
+    """
+    query = db.query(DataProvenanceLog)
+    if source_id:
+        query = query.filter(DataProvenanceLog.source_id == source_id)
+    return query.order_by(DataProvenanceLog.retrieval_timestamp.desc()).limit(limit).all()
+

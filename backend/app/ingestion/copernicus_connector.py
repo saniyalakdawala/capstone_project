@@ -16,7 +16,23 @@ class CopernicusConnector(BaseConnector):
     def fetch_data(self, platform: str = "SENTINEL-1", max_records: int = 5) -> Dict[str, Any]:
         """
         Discovers Sentinel scenes covering Mumbai bounding box using CDSE OData API.
+        If ENABLE_CDSE_INTEGRATION is disabled, returns a structured optional-disabled status
+        without blocking application startup or generating fake data.
         """
+        if not getattr(self.config, "ENABLE_CDSE_INTEGRATION", False):
+            return {
+                "status": "UNAVAILABLE_OPTIONAL_DISABLED",
+                "is_enabled": False,
+                "is_optional": True,
+                "platform": platform,
+                "message": (
+                    "Copernicus Data Space Ecosystem (CDSE) integration is optional and disabled by default. "
+                    "Set ENABLE_CDSE_INTEGRATION=true and supply CDSE_CLIENT_ID / CDSE_CLIENT_SECRET to enable "
+                    "live Sentinel-1 SAR and Sentinel-2 optical scene discovery."
+                ),
+                "data": {"value": []}
+            }
+
         bbox = self.config.MUMBAI_BBOX
         # WKT Polygon for Mumbai
         wkt = f"POLYGON(({bbox['min_lon']} {bbox['min_lat']}, {bbox['max_lon']} {bbox['min_lat']}, {bbox['max_lon']} {bbox['max_lat']}, {bbox['min_lon']} {bbox['max_lat']}, {bbox['min_lon']} {bbox['min_lat']}))"

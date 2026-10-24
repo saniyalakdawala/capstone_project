@@ -34,7 +34,8 @@ class IngestionConfig(BaseSettings):
     PROCESSED_DIR: str = os.path.join(BASE_DIR, "data", "processed")
 
     # API Credentials & Endpoints (All securely configured from environment)
-    # 1. Copernicus Data Space Ecosystem (CDSE)
+    # 1. Copernicus Data Space Ecosystem (CDSE) - Optional, disabled by default
+    ENABLE_CDSE_INTEGRATION: bool = os.getenv("ENABLE_CDSE_INTEGRATION", "false").lower() in ("true", "1", "yes")
     CDSE_CLIENT_ID: str = os.getenv("CDSE_CLIENT_ID", "")
     CDSE_CLIENT_SECRET: str = os.getenv("CDSE_CLIENT_SECRET", "")
     CDSE_ODATA_ENDPOINT: str = "https://catalogue.dataspace.copernicus.eu/odata/v1/Products"

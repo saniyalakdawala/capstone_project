@@ -4,18 +4,27 @@
 
 The Earth Intelligence Digital Twin (EIDT) stores structured environmental, meteorological, remote sensing, infrastructural, and simulation records in PostgreSQL with spatial extensions.
 
-### Schema Entities (Section 8)
+### Schema Entities (Section 8 & MMR Phase 1 Upgrade)
 
-1. **`study_areas`**: Administrative ward polygons (e.g., Kurla Ward L, Sion Ward F/North, BKC Ward H/East), areas, population counts, and average elevation.
+1. **`study_areas`**: Administrative polygons with regional hierarchy (`parent_region_id`, `region_type`, `hierarchy_path`), areas, population counts, and average elevation.
 2. **`weather_observations`**: Time-series precipitation, temperature, humidity, wind speed from IMD Santacruz/Colaba AWS and NASA GPM.
 3. **`satellite_observations`**: Metadata for Sentinel-1 C-SAR GRD and Sentinel-2 MSI scenes, acquisition footprints, sensor parameters, and polarization channels.
 4. **`environmental_features`**: River channels (Mithi River, Oshiwara River), drainage canals, DEM grid cells, land-use classifications.
-5. **`infrastructure`**: Critical facilities (trauma centers, municipal hospitals, schools, emergency shelters, fire stations) with point geometries and operational attributes (bed count, ICU units, emergency boats).
-6. **`road_segments`**: Arterial transport network with topological connectivity attributes, speed limits, lengths, and flood vulnerability indices.
+5. **`infrastructure`**: Critical facilities with locality metadata (`locality_name`, `sub_ward`), point geometries, and operational attributes.
+6. **`road_segments`**: Arterial transport network with locality identifiers (`locality_name`, `elevation_m`), speed limits, lengths, and flood vulnerability indices.
 7. **`flood_events`**: Historical ground-truth benchmarks (July 2005 deluge, August 2017 floods, July 2019 event) with validated flood extent polygons.
 8. **`model_runs`**: Version tracking for AI/ML models (Random Forest v1.4.2, SCS-CN Hydrological v1.1.0) and evaluation metadata (ROC-AUC, F1, IoU).
 9. **`scenarios`**: User-configured simulation scenarios (rainfall accumulation mm, duration, soil saturation %, high tide height m, mitigation flags).
 10. **`simulation_results`**: Computed spatial risk metrics, 95% confidence intervals, epistemic uncertainty, per-ward exposure breakdowns, and accessibility reductions.
+11. **`buildings`**: High-resolution building footprints, structural typology, height/levels, ground elevation, and structural flood susceptibility.
+12. **`locality_alerts`**: Actionable flood early warning advisories keyed to specific urban localities with severity levels and recommended civil actions.
+13. **`data_provenance_logs`**: Automated acquisition audit trail recording ingestion timestamps, source connectors, checksums, and record counts.
+14. **`schema_migrations`**: Idempotent migration ledger tracking applied schema versions.
+15. **`emergency_facilities`**: Verified hospitals, trauma centres, fire stations, police stations, and officially designated evacuation shelters with verified capacities.
+16. **`road_restrictions`**: Active verified road closures, underpass flood blockages, speed reductions, and scenario closures.
+17. **`route_requests`**: Logged routing requests and computed metrics (distance km, travel duration, waterlogged segment count, uncertainty notices).
+18. **`evacuation_scenarios`**: User-defined hypothetical road closure scenarios for emergency exercise simulation.
+
 
 ---
 
@@ -81,3 +90,22 @@ SELECT
 FROM road_segments r
 ORDER BY r.vulnerability_index DESC;
 ```
+
+### Query 4: Designated Evacuation Shelters with Verified Capacity Balance
+```sql
+SELECT 
+    f.facility_id,
+    f.name AS shelter_name,
+    f.locality_name,
+    f.ward_id,
+    f.capacity_total AS verified_capacity,
+    f.capacity_available AS current_available_capacity,
+    f.operating_status,
+    f.source_name AS verification_source,
+    f.last_verified_at
+FROM emergency_facilities f
+WHERE f.is_officially_designated_shelter = TRUE
+  AND f.operating_status = 'OPERATIONAL'
+ORDER BY f.capacity_total DESC NULLS LAST;
+```
+
