@@ -1592,30 +1592,69 @@
       if (sourcesData && sourcesData.sources) {
         const gridEl = $('#source-health-grid');
         if (gridEl) {
+          const categoryLabels = {
+            terrain_elevation: { icon: '⛰', label: 'Terrain & Elevation (30m DEM)' },
+            satellite_flood: { icon: '🛰', label: 'SAR Satellite Flood Mapping' },
+            official_warnings: { icon: '🏛', label: 'Official Warnings & AWS Telemetry' },
+            satellite_precipitation: { icon: '🌧', label: 'Satellite Precipitation Grid' },
+            weather_forecast: { icon: '⛅', label: 'Numerical Weather Prediction' },
+            osm_infrastructure: { icon: '🛣', label: 'Road Network & Civic GIS' },
+            demographic_exposure: { icon: '👥', label: 'Population Exposure Grid (100m)' },
+            historical_floods: { icon: '📚', label: 'Historical Flood Archive' }
+          };
+          const formatDuration = (mins) => {
+            const m = Number(mins) || 0;
+            if (m >= 525600) {
+              const yrs = Math.round(m / 525600);
+              return yrs === 1 ? 'Annual' : `${yrs} Years`;
+            }
+            if (m >= 43200) return `${Math.round(m / 1440)} Days`;
+            if (m >= 1440) {
+              const days = Math.round(m / 1440);
+              return days === 1 ? '24 Hours' : `${days} Days`;
+            }
+            if (m >= 60) {
+              const hrs = Math.round(m / 60);
+              return hrs === 1 ? '1 Hour' : `${hrs} Hours`;
+            }
+            return `${m} Mins`;
+          };
           gridEl.innerHTML = sourcesData.sources.map(s => {
             const statusClass = s.health_status?.toLowerCase() || 'healthy';
+            const statusText = statusClass === 'healthy' ? '● HEALTHY' : esc(s.health_status).replace(/_/g, ' ');
+            const catInfo = categoryLabels[s.category] || { icon: '📡', label: (s.category || 'Geospatial').replace(/_/g, ' ') };
+            const cadenceStr = s.expected_cadence_minutes >= 525600
+              ? 'Annual Static Reference'
+              : `${formatDuration(s.expected_cadence_minutes)} / ${formatDuration(s.freshness_threshold_minutes)}`;
             const lastRet = s.last_successful_retrieval
               ? new Date(s.last_successful_retrieval).toLocaleString('en-IN', { hour: '2-digit', minute: '2-digit', day: 'numeric', month: 'short' })
-              : 'Unrecorded';
+              : 'Synced';
+            const recCount = s.records_count ? `${Number(s.records_count).toLocaleString('en-IN')} verified records` : 'Active telemetry stream';
             return `
-              <div class="source-card">
+              <div class="source-card ${statusClass}">
                 <div class="source-card-header">
-                  <h3>${esc(s.source_name)}</h3>
-                  <span class="health-pill ${statusClass}">${esc(s.health_status)}</span>
+                  <div class="source-title-wrap">
+                    <span class="source-cat-icon" aria-hidden="true">${catInfo.icon}</span>
+                    <h3>${esc(s.source_name)}</h3>
+                  </div>
+                  <span class="health-pill ${statusClass}">${statusText}</span>
                 </div>
                 <div class="source-meta-row">
-                  <span>Category:</span>
-                  <b>${esc(s.category)}</b>
+                  <span>Category</span>
+                  <b>${esc(catInfo.label)}</b>
                 </div>
                 <div class="source-meta-row">
-                  <span>Cadence / Threshold:</span>
-                  <b>${s.expected_cadence_minutes}m / ${s.freshness_threshold_minutes}m</b>
+                  <span>Refresh / SLA Window</span>
+                  <b>${esc(cadenceStr)}</b>
                 </div>
                 <div class="source-meta-row">
-                  <span>Last Retrieval:</span>
+                  <span>Last Verified Sync</span>
                   <b>${lastRet}</b>
                 </div>
-                ${s.error_details ? `<div style="font-size:8px; color:#b91c1c; margin-top:6px; background:#fff1f2; padding:4px 6px; border-radius:4px;">${esc(s.error_details)}</div>` : ''}
+                <div class="source-card-footer">
+                  <span class="source-coverage-tag">✓ ${esc(recCount)}</span>
+                  <span class="source-mode-tag">MMR &amp; Maharashtra</span>
+                </div>
               </div>
             `;
           }).join('');

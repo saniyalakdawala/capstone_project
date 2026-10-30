@@ -2,6 +2,7 @@ import os
 import time
 import uuid
 import logging
+from contextlib import asynccontextmanager
 from fastapi import FastAPI, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
@@ -20,12 +21,22 @@ from app.models.schema import ApiMetricLog
 
 logger = logging.getLogger("eidt.api")
 
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    scheduler = get_orchestration_scheduler()
+    scheduler.start()
+    logger.info("EIDT Maharashtra Digital Twin API started successfully.")
+    yield
+    scheduler.shutdown()
+    logger.info("EIDT Maharashtra Digital Twin API shutdown clean.")
+
 app = FastAPI(
     title=settings.PROJECT_NAME,
     version=settings.VERSION,
     description="Regional Earth Intelligence Digital Twin for Multi-Hazard Disaster Intelligence in Maharashtra, India",
     docs_url="/docs",
-    redoc_url="/redoc"
+    redoc_url="/redoc",
+    lifespan=lifespan
 )
 
 # 1. Observability & Correlation ID Middleware
@@ -101,18 +112,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-@app.on_event("startup")
-def startup_event():
-    scheduler = get_orchestration_scheduler()
-    scheduler.start()
-    logger.info("EIDT Maharashtra Digital Twin API started successfully.")
-
-@app.on_event("shutdown")
-def shutdown_event():
-    scheduler = get_orchestration_scheduler()
-    scheduler.shutdown()
-    logger.info("EIDT Maharashtra Digital Twin API shutdown clean.")
 
 # Include Routers under /api
 api_prefix = settings.API_V1_STR

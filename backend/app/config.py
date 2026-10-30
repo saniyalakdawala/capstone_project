@@ -41,4 +41,11 @@ class Settings(BaseSettings):
     CDSE_CLIENT_ID: str = os.getenv("CDSE_CLIENT_ID", "")
     CDSE_CLIENT_SECRET: str = os.getenv("CDSE_CLIENT_SECRET", "")
 
+    # Additional Connector Credentials & Fallback Mode
+    EARTHDATA_USERNAME: str = os.getenv("EARTHDATA_USERNAME", "")
+    EARTHDATA_PASSWORD: str = os.getenv("EARTHDATA_PASSWORD", "")
+    IMD_API_KEY: str = os.getenv("IMD_API_KEY", "")
+    OPEN_TOPO_API_KEY: str = os.getenv("OPEN_TOPO_API_KEY", "")
+    ALLOW_DEMO_FALLBACK: bool = os.getenv("ALLOW_DEMO_FALLBACK", "true").lower() in ("true", "1", "yes")
+
 settings = Settings()

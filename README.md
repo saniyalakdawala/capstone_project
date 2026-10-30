@@ -42,9 +42,11 @@
 |                               FastAPI REST Backend                              |
 |  - /api/health                          - /api/analytics/exposure               |
 |  - /api/study-areas                     - /api/analytics/accessibility          |
-|  - /api/weather                         - /api/models/metrics                   |
-|  - /api/infrastructure                  - /api/data-pipeline/status             |
-|  - /api/scenarios                       - /api/data-pipeline/trigger            |
+|  - /api/weather                         - /api/models/metrics & /validation     |
+|  - /api/infrastructure                  - /api/data-pipeline/status & /trigger  |
+|  - /api/scenarios                       - /api/hazards & /api/inundation        |
+|  - /api/evacuation & /api/emergency     - /api/alerts & /api/monitoring         |
+|  - /api/replay & /api/validation        - /api/regional-ingestion               |
 +-----------------------------------------+---------------------------------------+
                                           |
                                           v
@@ -86,7 +88,7 @@ python -m uvicorn app.main:app --host 127.0.0.1 --port 8000 --reload
 cd frontend
 npm run dev
 ```
-Open [http://localhost:5173/](http://localhost:5173/) in your web browser.
+Open [http://127.0.0.1:5173/](http://127.0.0.1:5173/) in your web browser.
 
 #### 3. Database Initialization & Seeding (if needed)
 ```bash
